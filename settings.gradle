@@ -5,6 +5,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+
     }
 }
 enableFeaturePreview('VERSION_CATALOGS')
@@ -26,6 +27,8 @@ dependencyResolutionManagement {
             alias('compose-tooling').to("androidx.compose.ui:ui-tooling-preview:${COMPOSE_VERSION}")
 
             alias('compose-activity').to("androidx.activity:activity-compose:${ACTIVITY_COMPOSE_VERSION}")
+            alias('hilt-android').to("com.google.dagger:hilt-android:$HILT_VERSION")
+            alias('hilt-compiler').to("com.google.dagger:hilt-compiler:$HILT_VERSION")
 
 
         }
