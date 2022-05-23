@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PocApp</string>
+    <string name="app_name">SDK test</string>
     <string name="url_hostname">teamontherun.com</string>
     <string name="default_fqdn">conf-dev2410-ws.streamwide.ro</string>
     <string name="key_store_alias">demo_sdk_2022</string>

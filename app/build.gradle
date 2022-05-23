@@ -1,41 +1,30 @@
-/*
- *
- * 	StreamWIDE (Team on The Run)
- *
- * @createdBy  AndroidTeam on Fri, 24 Jan 2020 12:11:00 +0100
- * @copyright  Copyright (c) 2020 StreamWIDE UK Ltd (Team on the Run)
- * @email      support@teamontherun.com
- *
- * 	© Copyright 2020 StreamWIDE UK Ltd (Team on the Run). StreamWIDE is the copyright holder
- * 	of all code contained in this file. Do not redistribute or
- *  	re-use without permission.
- *
- * @lastModifiedOn Fri, 24 Jan 2020 11:32:39 +0100
- */
-
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk 31
 
     defaultConfig {
-        applicationId "com.stw.protorype"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionName = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
-        versionCode = 1
-        multiDexEnabled true
-        renderscriptTargetApi 21
-        renderscriptSupportModeEnabled true
-        vectorDrawables.useSupportLibrary = true
+        applicationId APP_ID
+        minSdk 21
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
         ndk {
             abiFilters "arm64-v8a","armeabi-v7a"
         }
         manifestPlaceholders = [
-                'appAuthRedirectScheme': 'com.streamwide.smartms'
+                'appAuthRedirectScheme': "$APP_ID"
         ]
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -43,18 +32,33 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion COMPOSE_VERSION
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 
 dependencies {
-    implementation (libs.sw.core)
-    implementation (libs.compose.material)
-    implementation (libs.compose.activity)
-    implementation (libs.compose.ui)
-    implementation (libs.core.ktx)
-    implementation (libs.compose.tooling)
 
-
+    implementation(libs.sw.core)
+    implementation(libs.sw.voip)
+    implementation(libs.sw.hardware)
+    implementation(libs.compose.material)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui)
+    implementation(libs.core.ktx)
+    implementation(libs.compose.tooling)
 }
