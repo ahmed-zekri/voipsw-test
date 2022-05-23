@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">PocApp</string>
+    <string name="url_hostname">teamontherun.com</string>
+    <string name="default_fqdn">conf-dev2410-ws.streamwide.ro</string>
+    <string name="key_store_alias">demo_sdk_2022</string>
+    <string name="login_txt">Login</string>
+    <string name="register">Register</string>
+    <string name="qr">Scan QR code</string>
+    <string name="organization_id">Please enter your organization ID</string>
+    <string name="number_text">Please enter your phone number</string>
+    <string name="activation_text">Please enter your activation code</string>
+    <string name="company_id">Company id</string>
+    <string name="phone_number">Phone number</string>
+    <string name="activation_code">Activation Code</string>
+    <string name="continueTo">Continue</string>
+    <string name="confirm">Confirm</string>
+    <string name="bad_device_id_dialog_title">Confirmation</string>
+    <string name="bad_device_id_dialog_content">Your account is already used on another device. Do you want to link the account with this device instead?</string>
+
+    <string name="ok_label_dialog">OK</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="chats_item">CHATS</string>
+    <string name="calls_item">CALLS</string>
+    <string name="contacts_item">CONTACTS</string>
+    <string name="search">Search</string>
+    <string name="status">Status</string>
+    <string name="settings">Settings</string>
+</resources>

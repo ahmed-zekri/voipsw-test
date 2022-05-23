@@ -1,0 +1,60 @@
+/*
+ *
+ * 	StreamWIDE (Team on The Run)
+ *
+ * @createdBy  AndroidTeam on Fri, 24 Jan 2020 12:11:00 +0100
+ * @copyright  Copyright (c) 2020 StreamWIDE UK Ltd (Team on the Run)
+ * @email      support@teamontherun.com
+ *
+ * 	© Copyright 2020 StreamWIDE UK Ltd (Team on the Run). StreamWIDE is the copyright holder
+ * 	of all code contained in this file. Do not redistribute or
+ *  	re-use without permission.
+ *
+ * @lastModifiedOn Fri, 24 Jan 2020 11:32:39 +0100
+ */
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.stw.protorype"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionName = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+        versionCode = 1
+        multiDexEnabled true
+        renderscriptTargetApi 21
+        renderscriptSupportModeEnabled true
+        vectorDrawables.useSupportLibrary = true
+        ndk {
+            abiFilters "arm64-v8a","armeabi-v7a"
+        }
+        manifestPlaceholders = [
+                'appAuthRedirectScheme': 'com.streamwide.smartms'
+        ]
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    implementation (libs.sw.core)
+    implementation (libs.compose.material)
+    implementation (libs.compose.activity)
+    implementation (libs.compose.ui)
+    implementation (libs.core.ktx)
+    implementation (libs.compose.tooling)
+
+
+}

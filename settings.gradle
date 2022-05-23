@@ -1,0 +1,19 @@
+enableFeaturePreview('VERSION_CATALOGS')
+
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            alias('sw-core').to("com.streamwide:swcore:${SW_CORE_FOR_PROTOTYPE}")
+            alias('core-ktx').to("androidx.core:core-ktx:${CORE_KTX_VERSION}")
+            alias('compose-ui').to("androidx.compose.ui:ui:${COMPOSE_VERSION}")
+            alias('compose-material').to("androidx.compose.material:material:${COMPOSE_VERSION}")
+            alias('compose-tooling').to("androidx.compose.ui:ui-tooling-preview:${COMPOSE_VERSION}")
+
+            alias('compose-activity').to("androidx.activity:activity-compose:${ACTIVITY_COMPOSE_VERSION}")
+
+
+        }
+    }
+}
+include ':app'
