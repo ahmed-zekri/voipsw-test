@@ -2,14 +2,18 @@ package com.example.testsdkvoip
 
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 
 import com.streamwide.smartms.lib.core.api.STWApplicationStateListener
 import com.streamwide.smartms.lib.core.api.SmartMsSDK
 import com.streamwide.smartms.lib.core.api.environment.certif.ITrustStore
 import com.streamwide.smartms.lib.core.api.environment.configuration.STWConfiguration
+import com.streamwide.smartms.lib.core.api.environment.logger.LogLevel
+import com.streamwide.smartms.lib.core.api.environment.logger.STWLoggerHelper
 
 import java.io.InputStream
+
 
 class MyApp : Application(), STWApplicationStateListener {
 
@@ -23,7 +27,7 @@ class MyApp : Application(), STWApplicationStateListener {
 
 
     override fun onCreate() {
-        mInstance = this;
+        mInstance = this
         init()
         super.onCreate()
         //init SmartMsSdk
@@ -32,13 +36,19 @@ class MyApp : Application(), STWApplicationStateListener {
     }
 
 
-    fun init() {
+    private fun init() {
         configureSdk()
         SmartMsSDK.getInstance().initializeApp(this, this, null)
+        //define the application log level
+        //define the application log level
+        val applicationLogLevel: LogLevel = LogLevel.DEBUG
+        STWLoggerHelper.initApplicationLogLevel(this, applicationLogLevel)
+        STWLoggerHelper.debuggableMode(this, true)
+
     }
 
 
-    fun configureSdk() {
+    private fun configureSdk() {
         STWConfiguration.Builder(this).apply {
             setDefaultConfigurationServerUrl(resources.getString(R.string.default_fqdn))
             setHostNameUrl(resources.getString(R.string.url_hostname))
@@ -69,14 +79,14 @@ class MyApp : Application(), STWApplicationStateListener {
         /**
          * @return keystore type (like [#getDefaultType()][java.security.KeyStore])
          */
-        override fun getKeyStoreType(): String? {
+        override fun getKeyStoreType(): String {
             return "BKS"
         }
 
         /**
          * @return an [InputStream] for the bks/jks file
          */
-        override fun getKeyStoreInputStream(): InputStream? {
+        override fun getKeyStoreInputStream(): InputStream {
             return getInstance().resources.openRawResource(R.raw.smartms_client_truststore)
             //return null
         }
@@ -86,7 +96,7 @@ class MyApp : Application(), STWApplicationStateListener {
          */
 
 
-        override fun getKeyStorePassword(): String? {
+        override fun getKeyStorePassword(): String {
             /*try {
                  return DecodeUtil.decode(ApplicationParams.application.get(ApplicationParams.SP))
              } catch (ignored: UnsupportedEncodingException) {
