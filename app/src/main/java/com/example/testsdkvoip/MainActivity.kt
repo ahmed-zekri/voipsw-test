@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        STWAccountManager.getInstance().register(this, "21625306014", "278768", object :
+        STWAccountManager.getInstance().register(this, "21625123457", "340697", object :
             RegisterOrganisationCallback {
             override fun onError(p0: STWAccountError) {
 
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 STWAccountManager.getInstance()
                     .login(this@MainActivity,
                         RegistrationCallback.LoginType.ACTIVATION_CODE_PROVIDED_BY_ADMINISTRATOR,
-                        "131",
+                        "8",
                         object : CompletionCallback {
                             override fun onError(p0: STWAccountError) {
 

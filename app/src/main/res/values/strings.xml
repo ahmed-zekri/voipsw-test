@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SDK test</string>
     <string name="url_hostname">teamontherun.com</string>
-    <string name="default_fqdn">conf-dev2410-ws.streamwide.ro</string>
+    <string name="default_fqdn">conf-dev249-ws.streamwide.ro</string>
     <string name="key_store_alias">demo_sdk_2022</string>
     <string name="login_txt">Login</string>
     <string name="register">Register</string>
