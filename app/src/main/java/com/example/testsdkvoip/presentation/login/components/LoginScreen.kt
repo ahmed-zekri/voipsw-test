@@ -1,30 +1,92 @@
 package com.example.testsdkvoip.presentation.login.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.testsdkvoip.presentation.login.LoginViewModel
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
 
-    val context = LocalContext.current
+    val snackBarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    val loginState = loginViewModel.logged_in_State.value
+
+    val mobilePhone = remember {
+        mutableStateOf("")
+    }
+    val companyId = remember {
+        mutableStateOf("")
+    }
+    SnackbarHost(hostState = snackBarHostState)
+
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        if (loginState.isLoading)
+
+            CircularProgressIndicator(modifier = Modifier.align(Center))
+        else if (loginState.registerInfo != null)
+            Text(
+                text = "Registered as ${loginState.registerInfo.emailSentTo}",
+                modifier = Modifier.align(Center)
+            )
+        else if (loginState.error != null)
+            Text(
+                text = "An error has been detected ${loginState.error}",
+                modifier = Modifier.align(Center)
+            )
+        else {
 
 
-    Box(modifier = Modifier.fillMaxSize())
-    {
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.align(Alignment.Center)) {
-            Text(text = if (!loginViewModel.stwAccountManager.isUserAuthenticated(context)) "Login" else "Contacts")
+            Column(modifier = Modifier.align(Center)) {
+
+                TextField(value = mobilePhone.value,
+                    keyboardOptions =
+                    KeyboardOptions(keyboardType = KeyboardType.Number),
+
+                    onValueChange = { mobilePhone.value = it },
+                    label = { Text(text = "Phone number") },
+                    placeholder = { Text(text = "Enter your phone number") })
+
+
+                TextField(value = companyId.value,
+                    onValueChange = { companyId.value = it },
+                    label = { Text(text = "companyId") },
+                    placeholder = { Text(text = "Enter companyId") })
+
+                Button(modifier = Modifier.align(CenterHorizontally), onClick = {
+                    if (companyId.value.length < 3 || mobilePhone.value.length < 3) {
+
+                        scope.launch { snackBarHostState.showSnackbar("Data too short") }
+
+                        return@Button
+                    }
+                    loginViewModel.registerUser(
+                        mobilePhone.value, companyId.value
+                    )
+                }, content = { Text(text = "Login") })
+
+            }
+
 
         }
 
+
     }
 
-
 }
+

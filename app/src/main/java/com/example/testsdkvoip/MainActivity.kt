@@ -7,7 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.testsdkvoip.presentation.navigation.Navigation
-import com.example.testsdkvoip.ui.theme.TestSdkVoipTheme
+import com.example.testsdkvoip.presentation.theme.TestSdkVoipTheme
 import com.streamwide.smartms.lib.core.api.account.STWAccountError
 import com.streamwide.smartms.lib.core.api.account.STWAccountManager
 import com.streamwide.smartms.lib.core.api.account.login.CompletionCallback

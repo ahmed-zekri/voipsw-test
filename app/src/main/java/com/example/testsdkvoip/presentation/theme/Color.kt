@@ -1,4 +1,4 @@
-package com.example.testsdkvoip.ui.theme
+package com.example.testsdkvoip.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
