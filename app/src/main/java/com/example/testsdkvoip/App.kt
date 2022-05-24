@@ -2,19 +2,18 @@ package com.example.testsdkvoip
 
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
-
 import com.streamwide.smartms.lib.core.api.STWApplicationStateListener
 import com.streamwide.smartms.lib.core.api.SmartMsSDK
 import com.streamwide.smartms.lib.core.api.environment.certif.ITrustStore
 import com.streamwide.smartms.lib.core.api.environment.configuration.STWConfiguration
 import com.streamwide.smartms.lib.core.api.environment.logger.LogLevel
 import com.streamwide.smartms.lib.core.api.environment.logger.STWLoggerHelper
-
+import dagger.hilt.android.HiltAndroidApp
 import java.io.InputStream
 
 
+@HiltAndroidApp
 class MyApp : Application(), STWApplicationStateListener {
 
     companion object {

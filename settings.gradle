@@ -30,6 +30,7 @@ dependencyResolutionManagement {
             alias('hilt-android').to("com.google.dagger:hilt-android:$HILT_VERSION")
             alias('hilt-compiler').to("com.google.dagger:hilt-compiler:$HILT_VERSION")
            alias('junit').to( "junit:junit:$JUNIT_VERSION")
+           alias('hilt-navigation-compose').to( "androidx.hilt:hilt-navigation-compose:$HILT_NAVIGATION_COMPOSE_VERSION")
 
         }
     }

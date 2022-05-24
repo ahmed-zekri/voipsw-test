@@ -4,10 +4,10 @@
     package="com.example.testsdkvoip">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"
-
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestSdkVoip"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
