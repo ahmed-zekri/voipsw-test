@@ -29,7 +29,12 @@ fun IntroScreen(
                 navHostController.navigate(
                     if (!introViewModel.stwAccountManager.isUserAuthenticated(context)) Screen.Login.route
                     else Screen.ContactList.route
-                )
+                ) {
+                    popUpTo( Screen.Intro.route) {
+                        inclusive = true
+                    }
+
+                }
             },
             modifier = Modifier.align(Alignment.Center)
         ) {

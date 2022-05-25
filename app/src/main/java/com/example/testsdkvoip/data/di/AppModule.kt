@@ -2,9 +2,11 @@ package com.example.testsdkvoip.data.di
 
 import android.content.Context
 import com.example.testsdkvoip.domain.use_case.AuthenticationUseCases
+import com.example.testsdkvoip.domain.use_case.FetchContactsList
 import com.example.testsdkvoip.domain.use_case.LoginUser
 import com.example.testsdkvoip.domain.use_case.RegisterUser
 import com.streamwide.smartms.lib.core.api.account.STWAccountManager
+import com.streamwide.smartms.lib.core.api_ktx.contact.STWContactApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +20,11 @@ class AppModule {
     @Provides
     @Singleton
     fun providesSTWAccountManager(): STWAccountManager = STWAccountManager.getInstance()
+
+
+    @Provides
+    @Singleton
+    fun providesSTWContactApi(): STWContactApi = STWContactApi
 
     @Provides
     @Singleton
@@ -45,6 +52,15 @@ class AppModule {
         registerUser: RegisterUser
     ): AuthenticationUseCases =
         AuthenticationUseCases(registerUser, loginUser)
+
+
+    @Provides
+    @Singleton
+
+    fun providesFetchContactsListUseCase(
+        stwContactApi: STWContactApi, @ApplicationContext context: Context
+    ): FetchContactsList =
+        FetchContactsList(stwContactApi, context)
 
 
 }

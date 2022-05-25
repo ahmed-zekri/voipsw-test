@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 import androidx.navigation.compose.rememberNavController
+import com.example.testsdkvoip.presentation.contacts.components.ContactList
 import com.example.testsdkvoip.presentation.intro.components.IntroScreen
 
 import com.example.testsdkvoip.presentation.login.components.LoginScreen
@@ -31,6 +32,16 @@ fun Navigation() {
 
 
         }
+
+        composable(route = Screen.ContactList.route) {
+
+
+            ContactList()
+
+
+        }
+
+
 
 
     }
