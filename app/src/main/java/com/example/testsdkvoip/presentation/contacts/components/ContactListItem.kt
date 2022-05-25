@@ -1,5 +1,6 @@
 package com.example.testsdkvoip.presentation.contacts.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -13,11 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWContact
 
 @Composable
-fun ContactListItem(contact: STWContact) {
+fun ContactListItem(contact: STWContact, onClick: (STWContact) -> Unit) {
 
     Row(
         Modifier
             .fillMaxWidth()
+            .clickable { onClick(contact) }
             .padding(20.dp), horizontalArrangement = Arrangement.SpaceBetween
 
 

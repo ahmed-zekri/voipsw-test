@@ -32,6 +32,7 @@ dependencyResolutionManagement {
             alias('junit').to("junit:junit:$JUNIT_VERSION")
             alias('hilt-navigation-compose').to("androidx.hilt:hilt-navigation-compose:$HILT_NAVIGATION_COMPOSE_VERSION")
             alias('coil-compose').to("io.coil-kt:coil-compose:$COIL_COMPOSE_VERSION")
+            alias('gson').to("com.google.code.gson:gson:$GSON_VERSION")
 
         }
     }

@@ -7,10 +7,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 import androidx.navigation.compose.rememberNavController
+import com.example.testsdkvoip.common.CONTACT_PARAM
 import com.example.testsdkvoip.presentation.contacts.components.ContactList
+import com.example.testsdkvoip.presentation.conversation.components.Conversation
 import com.example.testsdkvoip.presentation.intro.components.IntroScreen
 
 import com.example.testsdkvoip.presentation.login.components.LoginScreen
+import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWContact
 
 @Composable
 fun Navigation() {
@@ -36,12 +39,20 @@ fun Navigation() {
         composable(route = Screen.ContactList.route) {
 
 
-            ContactList()
+            ContactList(navHostController = navController)
 
 
         }
+        composable(route = Screen.Conversation.route) {
+            val stwContact =
+                navController.previousBackStackEntry?.savedStateHandle?.get<STWContact>(
+                    CONTACT_PARAM
+                )
+
+            Conversation(stwContact = stwContact!!)
 
 
+        }
 
 
     }

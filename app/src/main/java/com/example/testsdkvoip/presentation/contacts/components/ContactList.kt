@@ -11,10 +11,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.example.testsdkvoip.common.CONTACT_PARAM
+import com.example.testsdkvoip.common.toJson
 import com.example.testsdkvoip.presentation.contacts.ContactListViewModel
+import com.example.testsdkvoip.presentation.navigation.Screen
 
 @Composable
-fun ContactList(contactListViewModel: ContactListViewModel = hiltViewModel()) {
+fun ContactList(
+    contactListViewModel: ContactListViewModel = hiltViewModel(),
+    navHostController: NavHostController
+) {
     val fetchContactsState = contactListViewModel.fetchContactsState.value
     LaunchedEffect(key1 = true) { contactListViewModel.fetchContactsList() }
     Box(modifier = Modifier.fillMaxSize()) {
@@ -29,7 +36,13 @@ fun ContactList(contactListViewModel: ContactListViewModel = hiltViewModel()) {
                     LazyColumn(modifier = Modifier.align(Alignment.Center)) {
 
                         items(fetchContactsState.contactsList) { contact ->
-                            ContactListItem(contact = contact)
+                            ContactListItem(contact = contact) {
+                                navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                    CONTACT_PARAM,
+                                    contact
+                                )
+                                navHostController.navigate(Screen.Conversation.route)
+                            }
                         }
                     }
 
