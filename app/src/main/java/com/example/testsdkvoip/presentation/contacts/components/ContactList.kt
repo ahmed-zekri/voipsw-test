@@ -29,7 +29,7 @@ fun ContactList(contactListViewModel: ContactListViewModel = hiltViewModel()) {
                     LazyColumn(modifier = Modifier.align(Alignment.Center)) {
 
                         items(fetchContactsState.contactsList) { contact ->
-                            Text(text = contact.displayName.toString())
+                            ContactListItem(contact = contact)
                         }
                     }
 

@@ -17,7 +17,10 @@ class FetchContactsList @Inject constructor(
 
             emit(Resources.Loading())
             try {
-                val contacts = stwContactApi.getAllContacts(context)
+                val contacts = stwContactApi.getAllContacts(context)!!.sortedBy { stwContact ->
+                    stwContact
+                        .sortKey
+                }
                 emit(Resources.Success(contacts))
             } catch (exception: Exception) {
                 emit(Resources.Error(exception.message))

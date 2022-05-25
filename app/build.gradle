@@ -65,6 +65,7 @@ dependencies {
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.coil.compose)
 
 
 }
