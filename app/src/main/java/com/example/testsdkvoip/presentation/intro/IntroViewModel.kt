@@ -8,8 +8,4 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IntroViewModel @Inject constructor(val stwAccountManager: STWAccountManager) :
-    ViewModel() {
-
-
-
-}
+    ViewModel()

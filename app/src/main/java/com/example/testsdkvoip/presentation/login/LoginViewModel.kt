@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testsdkvoip.common.Resources
-import com.example.testsdkvoip.domain.use_case.RegisterUser
-import com.example.testsdkvoip.presentation.login.components.LoginState
+import com.example.testsdkvoip.domain.use_case.AuthenticationUseCases
+import com.example.testsdkvoip.presentation.login.components.AuthenticationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,22 +15,46 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
 
-    val registerUser: RegisterUser
+    private val authenticationUseCases: AuthenticationUseCases
 
 ) : ViewModel() {
 
-    private val _logged_in_State = mutableStateOf(LoginState())
-    val logged_in_State: State<LoginState> = _logged_in_State
+    private val _loggedInState = mutableStateOf(AuthenticationState())
+    val loggedInState: State<AuthenticationState> = _loggedInState
     fun registerUser(
         phoneNumber: String, companyId: String
 
 
     ) {
-        registerUser.invoke(phoneNumber, companyId).onEach {
+        authenticationUseCases.registerUser.invoke(phoneNumber, companyId).onEach {
             when (it) {
-                is Resources.Loading -> _logged_in_State.value = LoginState(isLoading = true)
-                is Resources.Success -> _logged_in_State.value = LoginState(registerInfo = it.data)
-                is Resources.Error -> _logged_in_State.value = LoginState(error = it.message)
+                is Resources.Loading -> _loggedInState.value = AuthenticationState(isLoading = true)
+                is Resources.Success -> _loggedInState.value =
+                    AuthenticationState(registerInfo = it.data)
+
+                is Resources.Error -> _loggedInState.value = AuthenticationState(error = it.message)
+
+
+            }
+
+        }.launchIn(viewModelScope)
+
+
+    }
+
+
+    fun loginUser(
+        activationCode: String
+
+
+    ) {
+        authenticationUseCases.loginUser.invoke(activationCode).onEach {
+            when (it) {
+                is Resources.Loading -> _loggedInState.value = AuthenticationState(isLoading = true)
+                is Resources.Success -> _loggedInState.value =
+                    AuthenticationState(success = true)
+
+                is Resources.Error -> _loggedInState.value = AuthenticationState(error = it.message)
 
 
             }

@@ -24,12 +24,15 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
     val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    val loginState = loginViewModel.logged_in_State.value
+    val loginState = loginViewModel.loggedInState.value
 
     val mobilePhone = remember {
         mutableStateOf("")
     }
     val companyId = remember {
+        mutableStateOf("")
+    }
+    val activationCode = remember {
         mutableStateOf("")
     }
     SnackbarHost(hostState = snackBarHostState)
@@ -39,12 +42,33 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
         if (loginState.isLoading)
 
             CircularProgressIndicator(modifier = Modifier.align(Center))
-        else if (loginState.registerInfo != null)
-            Text(
-                text = "Registered as ${loginState.registerInfo.emailSentTo}",
-                modifier = Modifier.align(Center)
-            )
-        else if (loginState.error != null)
+        else if (loginState.success) {
+            Text(text = "You are successfully connected")
+
+
+        } else if (loginState.registerInfo != null) {
+            Column(modifier = Modifier.align(Center)) {
+                TextField(
+                    modifier = Modifier.align(CenterHorizontally),
+                    value = activationCode.value,
+                    onValueChange = { activationCode.value = it },
+                    label = { Text(text = "activationCode") },
+                    placeholder = { Text(text = "Enter activation code received by your administrator") })
+
+                Button(modifier = Modifier.align(CenterHorizontally), onClick = {
+                    if (activationCode.value.isEmpty()) {
+
+                        scope.launch { snackBarHostState.showSnackbar("Activation code too short") }
+
+                        return@Button
+                    }
+                    loginViewModel.loginUser(
+                        activationCode.value
+                    )
+                }, content = { Text(text = "Login") })
+            }
+
+        } else if (loginState.error != null)
             Text(
                 text = "An error has been detected ${loginState.error}",
                 modifier = Modifier.align(Center)
@@ -78,7 +102,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     loginViewModel.registerUser(
                         mobilePhone.value, companyId.value
                     )
-                }, content = { Text(text = "Login") })
+                }, content = { Text(text = "Register") })
 
             }
 
@@ -89,4 +113,3 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
     }
 
 }
-
