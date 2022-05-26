@@ -33,9 +33,12 @@ fun Conversation(
 
 
         if (conversationListState.messages != null)
-            MessagesList(list = conversationListState.messages.collectAsLazyPagingItems())
+            Row(modifier = Modifier.weight(10f)) {
+                MessagesList(list = conversationListState.messages.collectAsLazyPagingItems())
+            }
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+
+        Row(modifier = Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.SpaceBetween) {
             TextField(value = messageBody.value, onValueChange = { messageBody.value = it })
             Button(onClick = { conversationViewModel.sendMessage(messageBody.value) }) {
                 Text(text = "Send")

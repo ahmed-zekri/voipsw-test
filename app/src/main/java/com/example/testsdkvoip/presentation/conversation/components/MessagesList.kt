@@ -31,17 +31,30 @@ fun MessagesList(list: LazyPagingItems<STWBaseMessage>) {
             items = list
 
 
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .padding(10.dp)
-                    .background(
-                        brush = Brush.horizontalGradient(listOf(Color.Gray, Color.LightGray)),
-                        shape = RoundedCornerShape(15.dp)
-                    ),
-            ) { Text(text = (it as STWMGMMessage).body!!, modifier = Modifier.padding(10.dp)) }
+        ) { message ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = if ((message as STWMGMMessage).sender != null) Arrangement.End else Arrangement.Start
+            )
 
+
+            {
+                Box(
+                    modifier = Modifier
+
+                        .padding(10.dp)
+                        .background(
+                            brush = Brush.horizontalGradient(listOf(Color.Gray, Color.LightGray)),
+                            shape = RoundedCornerShape(15.dp)
+                        ),
+                ) {
+                    Text(
+                        text = message.body!!,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
+
+            }
 
         }
 
