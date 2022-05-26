@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testsdkvoip.common.Resources
-import com.example.testsdkvoip.domain.use_case.FetchContactsList
+import com.example.testsdkvoip.domain.use_case.contacts.FetchContactsList
 import com.example.testsdkvoip.presentation.contacts.components.FetchContactsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

@@ -1,4 +1,4 @@
-package com.example.testsdkvoip.domain.use_case
+package com.example.testsdkvoip.domain.use_case.account
 
 import android.content.Context
 import com.example.testsdkvoip.common.Resources

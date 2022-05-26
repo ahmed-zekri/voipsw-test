@@ -1,7 +1,14 @@
 package com.example.testsdkvoip.data.di
 
 import android.content.Context
-import com.example.testsdkvoip.domain.use_case.*
+import com.example.testsdkvoip.domain.use_case.account.AuthenticationUseCases
+import com.example.testsdkvoip.domain.use_case.account.LoginUser
+import com.example.testsdkvoip.domain.use_case.account.RegisterUser
+import com.example.testsdkvoip.domain.use_case.contacts.FetchContactsList
+import com.example.testsdkvoip.domain.use_case.messaging.ConversationUseCases
+import com.example.testsdkvoip.domain.use_case.messaging.GetSingleConversation
+import com.example.testsdkvoip.domain.use_case.messaging.LoadConversation
+import com.example.testsdkvoip.domain.use_case.messaging.SendMessage
 import com.streamwide.smartms.lib.core.api.account.STWAccountManager
 import com.streamwide.smartms.lib.core.api_ktx.contact.STWContactApi
 import com.streamwide.smartms.lib.core.api_ktx.messages.STWMessagesApi
@@ -68,10 +75,42 @@ class AppModule {
     @Provides
     @Singleton
 
-    fun providesFetchConversationByUser(
+    fun providesGetSingleConversation(
         stwMessagesApi: STWMessagesApi, @ApplicationContext context: Context
-    ): FetchConversationByUser =
-        FetchConversationByUser(stwMessagesApi, context)
+    ): GetSingleConversation =
+        GetSingleConversation(stwMessagesApi, context)
+
+    @Provides
+    @Singleton
+    fun providesLoadConversation(
+        stwMessagesApi: STWMessagesApi,
+        @ApplicationContext context: Context
+    ): LoadConversation =
+        LoadConversation(stwMessagesApi, context)
+
+
+    @Provides
+    @Singleton
+    fun providesConversationUseCases(
+        loadConversation: LoadConversation,
+        getSingleConversation: GetSingleConversation, sendMessage: SendMessage
+    ): ConversationUseCases =
+        ConversationUseCases(
+            loadConversation = loadConversation,
+            getSingleConversation = getSingleConversation,
+            sendMessage = sendMessage
+        )
+
+    @Provides
+    @Singleton
+    fun providesSendMessage(
+        stwMessagesApi: STWMessagesApi,
+        @ApplicationContext context: Context
+    ): SendMessage =
+        SendMessage(
+            stwMessagesApi = stwMessagesApi,
+            context = context
+        )
 
 
 }

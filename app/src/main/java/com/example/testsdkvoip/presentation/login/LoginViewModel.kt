@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testsdkvoip.common.Resources
-import com.example.testsdkvoip.domain.use_case.AuthenticationUseCases
+import com.example.testsdkvoip.domain.use_case.account.AuthenticationUseCases
 import com.example.testsdkvoip.presentation.login.components.AuthenticationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

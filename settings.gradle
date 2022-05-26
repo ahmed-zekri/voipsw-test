@@ -34,6 +34,15 @@ dependencyResolutionManagement {
             alias('coil-compose').to("io.coil-kt:coil-compose:$COIL_COMPOSE_VERSION")
             alias('gson').to("com.google.code.gson:gson:$GSON_VERSION")
 
+            alias('paging-runtime').to("androidx.paging:paging-runtime:$paging_version")
+            alias('paging-rxjava2').to("androidx.paging:paging-rxjava2:$paging_version")
+            alias('paging-rxjava3').to("androidx.paging:paging-rxjava3:$paging_version")
+            alias('paging-guava').to("androidx.paging:paging-guava:$paging_version")
+            alias('paging-compose').to("androidx.paging:paging-compose:$paging_version_compose")
+
+
+
+
         }
     }
 }
