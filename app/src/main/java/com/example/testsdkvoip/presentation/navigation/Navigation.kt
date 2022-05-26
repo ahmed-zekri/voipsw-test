@@ -48,8 +48,8 @@ fun Navigation() {
                 navController.previousBackStackEntry?.savedStateHandle?.get<STWContact>(
                     CONTACT_PARAM
                 )
-
-            Conversation(stwContact = stwContact!!)
+if (stwContact!= null)
+            Conversation(stwContact = stwContact)
 
 
         }

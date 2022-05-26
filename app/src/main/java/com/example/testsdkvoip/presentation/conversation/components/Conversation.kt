@@ -1,11 +1,14 @@
 package com.example.testsdkvoip.presentation.conversation.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.testsdkvoip.presentation.conversation.ConversationViewModel
@@ -16,7 +19,9 @@ fun Conversation(
     conversationViewModel: ConversationViewModel = hiltViewModel(),
     stwContact: STWContact
 ) {
-    val context = LocalContext.current
+    val messageBody = remember {
+        mutableStateOf("")
+    }
     val conversationListState = conversationViewModel.conversationListState.value
     LaunchedEffect(key1 = true) {
         conversationViewModel.fetchConversation(stwContact = stwContact)
@@ -24,23 +29,19 @@ fun Conversation(
 
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (conversationListState.stwConversation != null)
-            LaunchedEffect(key1 = true) {
-                conversationViewModel.sendMessage("cdscdsvd")
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
 
 
-            }
-
-        if (conversationListState.messages != null) {
+        if (conversationListState.messages != null)
             MessagesList(list = conversationListState.messages.collectAsLazyPagingItems())
 
-            LaunchedEffect(key1 = true) {
-
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            TextField(value = messageBody.value, onValueChange = { messageBody.value = it })
+            Button(onClick = { conversationViewModel.sendMessage(messageBody.value) }) {
+                Text(text = "Send")
 
             }
         }
-
 
     }
 }
