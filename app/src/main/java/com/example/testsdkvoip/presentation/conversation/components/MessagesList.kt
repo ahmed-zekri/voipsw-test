@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWBaseMessage
+import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWMGMMessage
 
 @Composable
 fun MessagesList(list: LazyPagingItems<STWBaseMessage>) {
@@ -28,7 +29,7 @@ fun MessagesList(list: LazyPagingItems<STWBaseMessage>) {
 
         ) {
 
-            Text(text = it?.serverdate.toString())
+            Text(text = (it as STWMGMMessage).body!!)
 
 
         }
