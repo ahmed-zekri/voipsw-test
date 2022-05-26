@@ -55,7 +55,7 @@ class ConversationViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
 
-    fun sendMessage(message: String) {
+    fun sendMessage(message: String, completionCallback: () -> Unit) {
         conversationUseCases.sendMessage(
             conversationListState.value.stwConversation!!,
             message
@@ -63,7 +63,7 @@ class ConversationViewModel @Inject constructor(
             .onEach {
                 when (it) {
                     is Resources.Success -> {
-
+                        completionCallback()
 
                     }
                     is Resources.Error -> {

@@ -52,7 +52,12 @@ fun Conversation(
                     .weight(1f), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextField(value = messageBody.value, onValueChange = { messageBody.value = it })
-                Button(onClick = { conversationViewModel.sendMessage(messageBody.value) }) {
+                Button(onClick = {
+                    conversationViewModel.sendMessage(messageBody.value) {
+                        messageBody.value = ""
+
+                    }
+                }) {
                     Text(text = "Send")
 
                 }
