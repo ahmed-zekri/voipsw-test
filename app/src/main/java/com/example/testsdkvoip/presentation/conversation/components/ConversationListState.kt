@@ -6,7 +6,9 @@ import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWConversation
 import kotlinx.coroutines.flow.Flow
 
 data class ConversationListState(
+    val isLoading: Boolean = false,
     val messages: Flow<PagingData<STWBaseMessage>>? = null,
-    val stwConversation: STWConversation? = null
+    val stwConversation: STWConversation? = null,
+    val error: String? = null
 
 )

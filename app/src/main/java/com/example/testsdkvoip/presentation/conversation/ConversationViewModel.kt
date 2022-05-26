@@ -8,7 +8,6 @@ import com.example.testsdkvoip.common.Resources
 import com.example.testsdkvoip.domain.use_case.messaging.ConversationUseCases
 import com.example.testsdkvoip.presentation.conversation.components.ConversationListState
 import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWContact
-import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWConversation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -24,24 +23,43 @@ class ConversationViewModel @Inject constructor(
 
     fun fetchConversation(stwContact: STWContact) =
         conversationUseCases.getSingleConversation(stwContact).onEach {
-            if (it is Resources.Success) {
-                _conversationListState.value = ConversationListState(stwConversation = it.data)
-                conversationUseCases.loadConversation(it.data!!).onEach { messages ->
-                    if (messages is Resources.Success) {
-                        _conversationListState.value = ConversationListState(
-                            stwConversation = it.data,
-                            messages = messages.data
-                        )
+            when (it) {
+                is Resources.Error -> ConversationListState(error = it.message)
+                is Resources.Loading -> ConversationListState(isLoading = true)
+                is Resources.Success -> {
+                    _conversationListState.value = ConversationListState(stwConversation = it.data)
+                    conversationUseCases.loadConversation(it.data!!).onEach { messagesResponse ->
+                        when (messagesResponse) {
+                            is Resources.Error -> _conversationListState.value =
+                                ConversationListState(error = messagesResponse.message)
+
+                            is Resources.Success -> _conversationListState.value =
+                                ConversationListState(
+                                    stwConversation = it.data,
+                                    messages = messagesResponse.data
+                                )
 
 
-                    }
-                }.launchIn(viewModelScope)
+                            is Resources.Loading -> _conversationListState.value =
+                                ConversationListState(isLoading = true)
+
+                        }
+
+                    }.launchIn(viewModelScope)
+
+                }
+
+
             }
+
         }.launchIn(viewModelScope)
 
 
     fun sendMessage(message: String) {
-        conversationUseCases.sendMessage(conversationListState.value.stwConversation!!, message)
+        conversationUseCases.sendMessage(
+            conversationListState.value.stwConversation!!,
+            message
+        )
             .onEach {
                 when (it) {
                     is Resources.Success -> {

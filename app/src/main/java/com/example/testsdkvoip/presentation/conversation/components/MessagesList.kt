@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
-import com.example.testsdkvoip.presentation.theme.Teal200
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWBaseMessage
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWMGMMessage
 

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.testsdkvoip.common.CONTACT_PARAM
-import com.example.testsdkvoip.common.toJson
 import com.example.testsdkvoip.presentation.contacts.ContactListViewModel
 import com.example.testsdkvoip.presentation.navigation.Screen
 
