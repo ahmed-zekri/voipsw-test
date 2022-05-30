@@ -39,10 +39,42 @@ class ContactListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun hangCall() {
+
+
+    }
+
     fun callUserNumber(phoneNumber: String) =
         callUser(phoneNumber).onEach {
 
+            when (it) {
 
+                is Resources.Success -> {
+                    _fetchContactsState.value = FetchContactsState(
+                        callInProgress = true,
+                        contactsList = fetchContactsState.value.contactsList,
+                        voipChannels = fetchContactsState.value.voipChannels
+                    )
+
+                }
+                is Resources.Error -> {
+                    _fetchContactsState.value = FetchContactsState(
+                        error = it.message, contactsList = fetchContactsState.value.contactsList,
+                        voipChannels = fetchContactsState.value.voipChannels
+                    )
+
+                }
+
+
+                is Resources.Loading -> {
+                    _fetchContactsState.value = FetchContactsState(
+                        isLoading = true, contactsList = fetchContactsState.value.contactsList,
+                        voipChannels = fetchContactsState.value.voipChannels
+                    )
+
+                }
+
+            }
 
         }.launchIn(viewModelScope)
 

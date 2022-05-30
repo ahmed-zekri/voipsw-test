@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class LoadVoipChannels @Inject constructor(
-    private val stwCallApi: STWCallApi,
+
     private val context: Context
 ) {
     operator fun invoke(): Flow<Resources<List<STWVoipChannel>>> =
@@ -20,7 +20,7 @@ class LoadVoipChannels @Inject constructor(
             try {
 
                 val voipChannels =
-                    stwCallApi.getAllVoipChannels(
+                    STWCallApi.getAllVoipChannels(
                         context,
                         activeFirst = true,
                         activeChannelOrderedByLevel = true, searchContent = null

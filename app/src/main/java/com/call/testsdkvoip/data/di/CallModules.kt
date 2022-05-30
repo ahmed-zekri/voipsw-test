@@ -3,7 +3,6 @@ package com.call.testsdkvoip.data.di
 import android.content.Context
 import com.call.testsdkvoip.domain.use_case.call.CallUser
 import com.call.testsdkvoip.domain.use_case.call.LoadVoipChannels
-import com.streamwide.smartms.lib.core.api_ktx.call.STWCallApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,17 +14,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 
 class CallModules {
-    @Provides
-    @Singleton
-    fun providesCallApi(): STWCallApi = STWCallApi
 
     @Provides
     @Singleton
     fun providesLoadVoipChannels(
-        @ApplicationContext context: Context,
-        stwCallApi: STWCallApi
+        @ApplicationContext context: Context
     ): LoadVoipChannels =
-        LoadVoipChannels(stwCallApi, context)
+        LoadVoipChannels(context)
 
     @Provides
     @Singleton

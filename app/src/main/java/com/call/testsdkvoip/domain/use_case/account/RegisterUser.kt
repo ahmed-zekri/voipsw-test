@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class RegisterUser @Inject constructor(
-    private val stwAccountManager: STWAccountManager,
+
     private val context: Context
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -21,7 +21,7 @@ class RegisterUser @Inject constructor(
         callbackFlow {
 
             trySend(Resources.Loading())
-            stwAccountManager.register(context, phoneNumber, companyId, object :
+            STWAccountManager.getInstance().register(context, phoneNumber, companyId, object :
                 RegisterOrganisationCallback {
                 override fun onError(p0: STWAccountError) {
                     trySend(Resources.Error(p0.mMessage))

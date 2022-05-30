@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class SendMessage @Inject constructor(
-    private val stwMessagesApi: STWMessagesApi,
+
     private val context: Context
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -30,7 +30,7 @@ class SendMessage @Inject constructor(
             try {
 
 
-                stwMessagesApi.sendMessage(
+                STWMessagesApi.sendMessage(
                     context,
                     message,
                     null,

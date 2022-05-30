@@ -10,40 +10,37 @@ import com.streamwide.smartms.lib.core.network.voip.STWVCall
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class CallUser @Inject constructor(
+class HangCall @Inject constructor(
 
     private val context: Context
 ) {
-    operator fun invoke(phoneNumber: String): Flow<Resources<STWVCall>> =
+    operator fun invoke(conversationId: String): Flow<Resources<Unit>> =
 
-        callbackFlow {
+        flow {
 
-            trySend(Resources.Loading())
+            emit(Resources.Loading())
             try {
+                val voipSessionItem = STWCallManager.getInstance()
+                    .getActiveVoipSessionByThreadId(context, conversationId)
+                val sessionHolder =
+                    STWCallManager.getInstance().getCallWithID(voipSessionItem!!.sessionId!!)
 
-
-                STWCallManager.getInstance().startFreeCall(
-                    context, phoneNumber, STWCallPriority.NORMAL, object : CompletionCallback {
-                        override fun onError(p0: CallError) {
-
-                        }
-
-                        override fun onCompletion(p0: STWVCall) {
-                            trySend(Resources.Success(p0))
-                        }
-                    }
+                STWCallManager.getInstance().stopCall(
+                    context, sessionHolder
                 )
+                emit(Resources.Success(Unit))
 
 
             } catch (exception: Exception) {
-                trySend(Resources.Error(exception.message))
+                emit(Resources.Error(exception.message))
 
 
             }
 
-            awaitClose {}
+
         }
 
 

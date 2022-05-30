@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class FetchContactsList @Inject constructor(
-    private val stwContactApi: STWContactApi,
+
     private val context: Context
 ) {
     operator fun invoke(): Flow<Resources<List<STWContact>>> =
@@ -17,7 +17,7 @@ class FetchContactsList @Inject constructor(
 
             emit(Resources.Loading())
             try {
-                val contacts = stwContactApi.getAllContacts(context)!!.sortedBy { stwContact ->
+                val contacts = STWContactApi.getAllContacts(context)!!.sortedBy { stwContact ->
                     stwContact
                         .sortKey
                 }

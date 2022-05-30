@@ -5,7 +5,6 @@ import com.call.testsdkvoip.domain.use_case.messaging.ConversationUseCases
 import com.call.testsdkvoip.domain.use_case.messaging.GetSingleConversation
 import com.call.testsdkvoip.domain.use_case.messaging.LoadConversation
 import com.call.testsdkvoip.domain.use_case.messaging.SendMessage
-import com.streamwide.smartms.lib.core.api_ktx.messages.STWMessagesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,25 +17,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class MessagingModules {
 
-    @Provides
-    @Singleton
-    fun providesSTWMessagesApi(): STWMessagesApi = STWMessagesApi
 
     @Provides
     @Singleton
 
     fun providesGetSingleConversation(
-        stwMessagesApi: STWMessagesApi, @ApplicationContext context: Context
+        @ApplicationContext context: Context
     ): GetSingleConversation =
-        GetSingleConversation(stwMessagesApi, context)
+        GetSingleConversation(context)
 
     @Provides
     @Singleton
     fun providesLoadConversation(
-        stwMessagesApi: STWMessagesApi,
         @ApplicationContext context: Context
     ): LoadConversation =
-        LoadConversation(stwMessagesApi, context)
+        LoadConversation(context)
 
 
     @Provides
@@ -54,11 +49,11 @@ class MessagingModules {
     @Provides
     @Singleton
     fun providesSendMessage(
-        stwMessagesApi: STWMessagesApi,
+
         @ApplicationContext context: Context
     ): SendMessage =
         SendMessage(
-            stwMessagesApi = stwMessagesApi,
+
             context = context
         )
 

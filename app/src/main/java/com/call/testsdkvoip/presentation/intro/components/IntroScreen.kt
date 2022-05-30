@@ -8,14 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.call.testsdkvoip.presentation.intro.IntroViewModel
 import com.call.testsdkvoip.presentation.navigation.Screen
+import com.streamwide.smartms.lib.core.api.account.STWAccountManager
 
 @Composable
 fun IntroScreen(
-    introViewModel: IntroViewModel = hiltViewModel(),
+
     navHostController: NavHostController
 ) {
 
@@ -27,10 +26,12 @@ fun IntroScreen(
         Button(
             onClick = {
                 navHostController.navigate(
-                    if (!introViewModel.stwAccountManager.isUserAuthenticated(context)) Screen.Login.route
+                    if (!STWAccountManager.getInstance()
+                            .isUserAuthenticated(context)
+                    ) Screen.Login.route
                     else Screen.ContactList.route
                 ) {
-                    popUpTo( Screen.Intro.route) {
+                    popUpTo(Screen.Intro.route) {
                         inclusive = true
                     }
 
@@ -38,7 +39,11 @@ fun IntroScreen(
             },
             modifier = Modifier.align(Alignment.Center)
         ) {
-            Text(text = if (!introViewModel.stwAccountManager.isUserAuthenticated(context)) "Login" else "Contacts")
+            Text(
+                text = if (!STWAccountManager.getInstance()
+                        .isUserAuthenticated(context)
+                ) "Login" else "Contacts"
+            )
 
 
         }

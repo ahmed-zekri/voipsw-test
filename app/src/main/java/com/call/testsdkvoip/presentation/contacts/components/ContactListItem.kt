@@ -14,17 +14,41 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.call.testsdkvoip.presentation.contacts.ContactListViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWContact
 import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWSubscriber
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ContactListItem(
     contact: STWContact,
     onClick: (STWContact) -> Unit,
     contactListViewModel: ContactListViewModel = hiltViewModel()
 ) {
+
+
+    val permissionsState = rememberMultiplePermissionsState(
+        listOf(
+            android.Manifest.permission.RECORD_AUDIO,
+            android.Manifest.permission.ANSWER_PHONE_CALLS,
+            android.Manifest.permission.CALL_PHONE,
+            android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
+            android.Manifest.permission.READ_PHONE_STATE,
+
+
+            )
+    )
+
+
+
+
     Button(onClick = {
-        contactListViewModel.callUserNumber((contact as STWSubscriber).phone!!.internationalNumber)
+        if (permissionsState.allPermissionsGranted)
+            contactListViewModel.callUserNumber(phoneNumber = (contact as STWSubscriber).phone!!.internationalNumber)
+        else
+            permissionsState.launchMultiplePermissionRequest()
+
 
     }) {
 

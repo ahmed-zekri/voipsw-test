@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GetSingleConversation @Inject constructor(
-    private val stwMessagesApi: STWMessagesApi,
+ 
     private val context: Context
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -28,14 +28,14 @@ class GetSingleConversation @Inject constructor(
             trySend(Resources.Loading())
             try {
                 var conversation =
-                    stwMessagesApi.getConversationBySingleContact(context, stwContact)
+                    STWMessagesApi.getConversationBySingleContact(context, stwContact)
                 if (conversation != null)
                     trySend(Resources.Success(conversation))
                 else {
                     trySend(Resources.Loading())
                     val recipients = MessageUtil.prepareParticipantArrayString(listOf(stwContact))
 
-                    stwMessagesApi.createConversation(
+                    STWMessagesApi.createConversation(
                         context,
                         conversationType = ConversationTypes.ONE_TO_ONE,
                         recipients = recipients, callback = object : CreationConversationCallback {
@@ -44,7 +44,7 @@ class GetSingleConversation @Inject constructor(
                                     trySend(Resources.Error("Unable to create conversation"))
                                 else
                                     flowCollector.launch {
-                                        conversation = stwMessagesApi.getConversationById(
+                                        conversation = STWMessagesApi.getConversationById(
                                             context,
                                             conversationId
                                         )

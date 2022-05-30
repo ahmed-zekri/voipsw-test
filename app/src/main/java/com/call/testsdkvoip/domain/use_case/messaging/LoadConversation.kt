@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class LoadConversation @Inject constructor(
-    private val stwMessagesApi: STWMessagesApi,
+
     private val context: Context
 ) {
     operator fun invoke(stwConversation: STWConversation): Flow<Resources<Flow<PagingData<STWBaseMessage>>>> =
@@ -22,7 +22,7 @@ class LoadConversation @Inject constructor(
             try {
 
                 val messages =
-                    stwMessagesApi.getMessagesByThreadId(
+                    STWMessagesApi.getMessagesByThreadId(
                         context,
                         stwConversation.threadId!!
                     )
