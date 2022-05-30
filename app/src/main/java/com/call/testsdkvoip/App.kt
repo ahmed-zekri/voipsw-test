@@ -3,8 +3,6 @@ package com.call.testsdkvoip
 
 import android.app.Application
 import android.util.Log
-import com.call.testsdkvoip.R
-
 import com.streamwide.smartms.lib.core.api.STWApplicationStateListener
 import com.streamwide.smartms.lib.core.api.SmartMsSDK
 import com.streamwide.smartms.lib.core.api.environment.certif.ITrustStore

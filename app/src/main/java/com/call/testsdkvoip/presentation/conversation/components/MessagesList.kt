@@ -14,6 +14,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWBaseMessage
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWMGMMessage
+import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWVoIPMessage
 
 @Composable
 fun MessagesList(list: LazyPagingItems<STWBaseMessage>) {
@@ -30,10 +31,30 @@ fun MessagesList(list: LazyPagingItems<STWBaseMessage>) {
             items = list
 
 
-        ) { message ->
+        ) {
+
+                message ->
+            var isLeft = false
+            var caller: String? = null
+            var messageBody: String? = null
+            when (message) {
+
+                is STWVoIPMessage -> {
+                    isLeft = false
+                    caller = message.voIPSessions?.get(0)?.caller
+                }
+
+                is STWMGMMessage -> {
+                    isLeft = message.sender == null
+                    messageBody = message.body
+
+
+                }
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = if ((message as STWMGMMessage).sender != null) Arrangement.End else Arrangement.Start
+                horizontalArrangement = if (isLeft) Arrangement.End else Arrangement.Start
             )
 
 
@@ -43,12 +64,18 @@ fun MessagesList(list: LazyPagingItems<STWBaseMessage>) {
 
                         .padding(10.dp)
                         .background(
-                            brush = Brush.horizontalGradient(listOf(Color.Gray, Color.LightGray)),
+                            brush = Brush.horizontalGradient(
+                                listOf(
+                                    Color.Gray,
+                                    Color.LightGray
+                                )
+                            ),
                             shape = RoundedCornerShape(15.dp)
                         ),
                 ) {
                     Text(
-                        text = message.body!!,
+                        text = messageBody
+                            ?: "You missed a call from ${caller ?: "Unknown number"}",
                         modifier = Modifier.padding(10.dp)
                     )
                 }
