@@ -3,8 +3,11 @@ package com.call.testsdkvoip
 
 import android.app.Application
 import android.util.Log
+import com.call.testsdkvoip.common.MainManager.Companion.incomingSessionsListener
+import com.call.testsdkvoip.common.MainManager.Companion.sessionStateListener
 import com.streamwide.smartms.lib.core.api.STWApplicationStateListener
 import com.streamwide.smartms.lib.core.api.SmartMsSDK
+import com.streamwide.smartms.lib.core.api.call.STWCallManager
 import com.streamwide.smartms.lib.core.api.environment.certif.ITrustStore
 import com.streamwide.smartms.lib.core.api.environment.configuration.STWConfiguration
 import com.streamwide.smartms.lib.core.api.environment.logger.LogLevel
@@ -44,6 +47,10 @@ class MyApp : Application(), STWApplicationStateListener {
         STWLoggerHelper.initApplicationLogLevel(this, applicationLogLevel)
         STWLoggerHelper.debuggableMode(this, true)
         // MainManager.instance.registerOnSDKCallbacks()
+        STWCallManager.getInstance().registerForSessionEvents(
+            incomingSessionsListener, sessionStateListener,
+            null, null, null
+        )
 
     }
 

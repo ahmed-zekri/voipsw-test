@@ -14,71 +14,94 @@
  */
 package com.call.testsdkvoip.common
 
+import com.streamwide.smartms.lib.core.api.call.IncomingSessionsListener
+import com.streamwide.smartms.lib.core.api.call.SessionStateListener
+import com.streamwide.smartms.lib.core.data.item.VoipSessionItem
+import com.streamwide.smartms.lib.core.network.voip.STWVCall
+
 class MainManager private constructor() {
-/*
-    @ConnectionState
-    private val mCurrentConnectionState = ConnectionState.STATE_IDLE
-    fun getCurrentConnectionState(): String {
-        return mCurrentConnectionState
-    }
+    companion object {
+        val incomingSessionsListener: IncomingSessionsListener =
+            object : IncomingSessionsListener {
+                override fun onReceiveIncomingCall(call: STWVCall) {
 
-    fun registerOnSDKCallbacks() {
-        currentConnectionState = STWAccountManager.getInstance().accountConnectionState
-        STWCallManager.getInstance().registerForSessionEvents(
-            mIncomingSessionsEvents, mSessionsStateEvents,
-            mSessionParticipantEvents, mPocFloorControlEvents, null
-        )
-
-    }
-
-    fun startImmobilityDetectionEnable() {
-        val isImmobilityActive: Boolean =
-            MainPrefsHelper.getInstance(MainApplication.getContext()).getBoolean(
-                MainPreference.IMMOBILITY_DETECTION_FEATURE_ENABLED,
-                MainPreference.DefaultPrefs.DEFAULT_IMMOBILITY_DETECTION_FEATURE_ENABLED
-            )
-        val isEmergencyCallAllowed =
-            STWEmergencyManager.getInstance().isEmergencyCallAllowed(MainApplication.getContext())
-        if (isImmobilityActive && isEmergencyCallAllowed) {
-            ImmobilityDetectionHelper.Companion.startImmobilityDetection(MainApplication.getContext())
-        }
-    }
-
-    private val mIncomingSessionsEvents: IncomingSessionsListener =
-        object : IncomingSessionsListener {
-            override fun onReceiveIncomingCall(call: STWVCall) {
-                MainWakeLockManager.getInstance(MainApplication.getContext())
-                    .acquireWakeLock(MainWakeLockManager.MainRegisteredComponent.VoIPSessionInvitation)
-                VoipCallUtil.handleIncomingCall(MainApplication.getContext(), call)
-
-                *//**
-                 * Notify USB device call is ringing
-                 *//*
-                sendDataAction(OutData.RINGING)
-            }
-
-            override fun onReceiveMissedCall(voipSessionItem: VoipSessionItem) {
-
-            }
-
-            override fun onReceiveIncomingMergedCall(call: STWVCall) {
-
-            }
-        }
-
-
-
-        @get:Synchronized
-        val instance: MainManager
-            get() {
-                if (mInstance == null) {
-                    STWLoggerHelper.LOGGER.i(
-                        Pair.create(CLASS_NAME, "getInstance"), LoggerConstant.APPLICATION,
-                        "initialize MainManager singleton"
-                    )
-                    mInstance = MainManager()
                 }
-                return mInstance!!
+
+                override fun onReceiveMissedCall(voipSessionItem: VoipSessionItem) {
+
+                }
+
+                override fun onReceiveIncomingMergedCall(call: STWVCall) {
+
+
+                }
             }
-    }*/
+        val sessionStateListener: SessionStateListener = object : SessionStateListener {
+            override fun calling(p0: STWVCall) {
+
+            }
+
+            override fun onSessionStarted(p0: STWVCall) {
+
+            }
+
+            override fun inCall(p0: STWVCall) {
+
+            }
+
+            override fun onSessionConnected(p0: STWVCall) {
+
+            }
+
+            override fun onSessionReconnecting(p0: STWVCall) {
+
+            }
+
+            override fun onAllSessionsReconnecting() {
+
+            }
+
+            override fun onSessionOnHold(p0: STWVCall) {
+
+            }
+
+            override fun onSessionResumed(p0: STWVCall) {
+
+            }
+
+            override fun onQosChanged(p0: STWVCall) {
+
+            }
+
+            override fun onAudioPlayVolumeChanged(p0: STWVCall) {
+
+            }
+
+            override fun onAudioCaptureVolumeChanged(p0: STWVCall) {
+
+            }
+
+            override fun onSessionStopped(p0: VoipSessionItem) {
+
+            }
+
+            override fun onSessionStoppedToMerge(p0: VoipSessionItem) {
+
+            }
+
+            override fun onVoipSessionClosed(p0: VoipSessionItem) {
+
+            }
+
+            override fun onSessionAnsweredFromOtherDevice(p0: String) {
+
+            }
+
+            override fun onAudioOutputChanged() {
+
+            }
+        }
+    }
+
+
 }
