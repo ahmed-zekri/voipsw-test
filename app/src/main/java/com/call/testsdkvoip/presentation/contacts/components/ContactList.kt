@@ -89,7 +89,7 @@ fun ContactList(
                             )
                             Button(
                                 onClick = {
-
+                                    contactListViewModel.hangCall()
 
                                 },
                                 modifier = Modifier

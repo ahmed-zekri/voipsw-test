@@ -9,7 +9,7 @@ data class FetchContactsState(
 
     val isLoading: Boolean = false,
     val contactsList: List<STWContact>? = null,
-    val voipChannels: List<STWVoipChannel>? = null,
+
     val error: String? = null,
     val success: Boolean = false,
     val callInProgress: Boolean = false

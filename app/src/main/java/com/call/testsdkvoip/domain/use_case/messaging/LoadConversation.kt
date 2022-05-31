@@ -14,6 +14,12 @@ class LoadConversation @Inject constructor(
 
     private val context: Context
 ) {
+    companion object {
+        var id: Int = 0
+
+
+    }
+
     operator fun invoke(stwConversation: STWConversation): Flow<Resources<Flow<PagingData<STWBaseMessage>>>> =
 
         flow {
@@ -27,6 +33,7 @@ class LoadConversation @Inject constructor(
                         stwConversation.threadId!!
                     )
                 emit(Resources.Success(messages))
+                id = stwConversation.threadId!!
 
             } catch (exception: Exception) {
                 emit(Resources.Error(exception.message))

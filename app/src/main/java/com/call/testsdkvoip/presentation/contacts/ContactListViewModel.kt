@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.call.testsdkvoip.common.Resources
 import com.call.testsdkvoip.domain.use_case.call.CallUser
-import com.call.testsdkvoip.domain.use_case.call.LoadVoipChannels
+import com.call.testsdkvoip.domain.use_case.call.HangCall
 import com.call.testsdkvoip.domain.use_case.contacts.FetchContactsList
 import com.call.testsdkvoip.presentation.contacts.components.FetchContactsState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,30 +17,51 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
 
-    private val fetchContactsListUseCase: FetchContactsList, private val callUser: CallUser,
-    loadVoipChannels: LoadVoipChannels
+    private val fetchContactsListUseCase: FetchContactsList,
+    private val callUser: CallUser,
+    private val hangCall: HangCall,
+
 
 ) : ViewModel() {
 
     private val _fetchContactsState = mutableStateOf(FetchContactsState())
     val fetchContactsState: State<FetchContactsState> = _fetchContactsState
 
-    init {
-        loadVoipChannels().onEach {
 
+
+    fun hangCall() {
+        hangCall.invoke().onEach {
             when (it) {
-                is Resources.Success -> _fetchContactsState.value =
-                    FetchContactsState(voipChannels = it.data)
 
+                is Resources.Success -> {
+                    _fetchContactsState.value = FetchContactsState(
+                        callInProgress = false,
+                        contactsList = fetchContactsState.value.contactsList
+
+                    )
+
+                }
+                is Resources.Error -> {
+                    _fetchContactsState.value = FetchContactsState(
+                        error = it.message, contactsList = fetchContactsState.value.contactsList
+
+                    )
+
+                }
+
+
+                is Resources.Loading -> {
+                    _fetchContactsState.value = FetchContactsState(
+                        isLoading = true, contactsList = fetchContactsState.value.contactsList
+
+                    )
+
+                }
 
             }
 
 
         }.launchIn(viewModelScope)
-    }
-
-    fun hangCall() {
-
 
     }
 
@@ -52,15 +73,15 @@ class ContactListViewModel @Inject constructor(
                 is Resources.Success -> {
                     _fetchContactsState.value = FetchContactsState(
                         callInProgress = true,
-                        contactsList = fetchContactsState.value.contactsList,
-                        voipChannels = fetchContactsState.value.voipChannels
+                        contactsList = fetchContactsState.value.contactsList
+
                     )
 
                 }
                 is Resources.Error -> {
                     _fetchContactsState.value = FetchContactsState(
-                        error = it.message, contactsList = fetchContactsState.value.contactsList,
-                        voipChannels = fetchContactsState.value.voipChannels
+                        error = it.message, contactsList = fetchContactsState.value.contactsList
+
                     )
 
                 }
@@ -68,8 +89,8 @@ class ContactListViewModel @Inject constructor(
 
                 is Resources.Loading -> {
                     _fetchContactsState.value = FetchContactsState(
-                        isLoading = true, contactsList = fetchContactsState.value.contactsList,
-                        voipChannels = fetchContactsState.value.voipChannels
+                        isLoading = true, contactsList = fetchContactsState.value.contactsList
+
                     )
 
                 }
