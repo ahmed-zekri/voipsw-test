@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.paging.guava)
     implementation(libs.paging.compose)
     implementation(libs.accompanist)
+    implementation(libs.font.awesome.compose)
 
 
 }

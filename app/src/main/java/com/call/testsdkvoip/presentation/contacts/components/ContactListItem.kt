@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -16,6 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.call.testsdkvoip.presentation.contacts.ContactListViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.guru.fontawesomecomposelib.FaIcon
+import com.guru.fontawesomecomposelib.FaIcons
 import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWContact
 import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWSubscriber
 
@@ -43,21 +46,10 @@ fun ContactListItem(
 
 
 
-    Button(onClick = {
-        if (permissionsState.allPermissionsGranted)
-            contactListViewModel.callUserNumber(phoneNumber = (contact as STWSubscriber).phone!!.internationalNumber)
-        else
-            permissionsState.launchMultiplePermissionRequest()
-
-
-    }) {
-
-        Text(text = "Call user")
-    }
     Row(
         Modifier
             .fillMaxWidth()
-            .clickable { onClick(contact) }
+
             .padding(20.dp), horizontalArrangement = Arrangement.SpaceBetween
 
 
@@ -70,6 +62,7 @@ fun ContactListItem(
                 text = "${contact.displayName}",
                 modifier = Modifier
                     .wrapContentSize()
+                    .clickable { onClick(contact) }
                     .padding(20.dp, 8.dp, 0.dp, 0.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body2,
@@ -79,20 +72,23 @@ fun ContactListItem(
         }
 
 
-        Text(
-            text = "${contact.sortKey}",
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(0.dp, 8.dp, 0.dp, 0.dp),
-            textAlign = TextAlign.End,
-            style = TextStyle(fontStyle = FontStyle.Italic),
-            overflow = TextOverflow.Ellipsis,
 
 
-            )
+        Spacer(Modifier.weight(1f))
+        FaIcon(
+            faIcon = FaIcons.Phone,
+            tint = Color.Green,
+            size = 24.dp,
+            modifier = Modifier.clickable {
+                if (permissionsState.allPermissionsGranted)
+                    contactListViewModel.callUserNumber(phoneNumber = (contact as STWSubscriber).phone!!.internationalNumber)
+                else
+                    permissionsState.launchMultiplePermissionRequest()
+
+
+            })
+
 
     }
 
 }
-
-

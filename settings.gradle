@@ -15,11 +15,12 @@ dependencyResolutionManagement {
         mavenLocal()
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     versionCatalogs {
         libs {
             alias('sw-core').to("com.streamwide:swcore:${SW_CORE_FOR_PROTOTYPE}")
-            alias('sw-voip').to("com.streamwide.smartms.voip:release:2.6.50")
+            alias('sw-voip').to("com.streamwide.smartms.voip:${SMARTMS_VOIP_PROTOTYPE}")
             alias('sw-hardware').to("com.streamwide:swhardware:${SW_HARDWARE_FOR_PROTOTYPE}")
             alias('core-ktx').to("androidx.core:core-ktx:${CORE_KTX_VERSION}")
             alias('compose-ui').to("androidx.compose.ui:ui:${COMPOSE_VERSION}")
@@ -41,6 +42,7 @@ dependencyResolutionManagement {
             alias('paging-compose').to("androidx.paging:paging-compose:$paging_version_compose")
 
             alias('accompanist').to("com.google.accompanist:accompanist-permissions:$accompanist_version")
+            alias('font-awesome-compose').to("com.github.Gurupreet:FontAwesomeCompose:$font_awesome_compose_version")
 
 
         }
@@ -48,4 +50,3 @@ dependencyResolutionManagement {
 }
 
 include ':app'
-

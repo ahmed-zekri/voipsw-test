@@ -8,7 +8,6 @@ import com.streamwide.smartms.lib.core.api_ktx.messages.STWMessagesApi
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWConversation
 import com.streamwide.smartms.lib.core.data.item.BaseMessage
 import com.streamwide.smartms.lib.core.data.item.ThreadItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -18,7 +17,6 @@ class SendMessage @Inject constructor(
 
     private val context: Context
 ) {
-    @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(
         stwConversation: STWConversation,
         message: String

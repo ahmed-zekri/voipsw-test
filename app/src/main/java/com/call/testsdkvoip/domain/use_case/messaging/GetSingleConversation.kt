@@ -9,7 +9,6 @@ import com.streamwide.smartms.lib.core.api_ktx.messages.callback.CreationConvers
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.ConversationTypes
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.MessagingError
 import com.streamwide.smartms.lib.core.api_ktx.messages.model.STWConversation
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -20,7 +19,6 @@ class GetSingleConversation @Inject constructor(
  
     private val context: Context
 ) {
-    @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(stwContact: STWContact): Flow<Resources<STWConversation>> =
 
         callbackFlow {

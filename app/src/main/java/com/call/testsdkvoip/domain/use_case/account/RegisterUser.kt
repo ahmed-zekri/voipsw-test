@@ -6,7 +6,6 @@ import com.streamwide.smartms.lib.core.api.account.STWAccountError
 import com.streamwide.smartms.lib.core.api.account.STWAccountManager
 import com.streamwide.smartms.lib.core.api.account.login.RegisterInfo
 import com.streamwide.smartms.lib.core.api.account.login.RegisterOrganisationCallback
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -16,7 +15,6 @@ class RegisterUser @Inject constructor(
 
     private val context: Context
 ) {
-    @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(phoneNumber: String, companyId: String): Flow<Resources<RegisterInfo>> =
         callbackFlow {
 

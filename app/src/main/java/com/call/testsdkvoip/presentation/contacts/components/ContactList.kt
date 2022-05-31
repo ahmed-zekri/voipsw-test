@@ -1,16 +1,16 @@
 package com.call.testsdkvoip.presentation.contacts.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -22,6 +22,9 @@ import androidx.navigation.NavHostController
 import com.call.testsdkvoip.common.CONTACT_PARAM
 import com.call.testsdkvoip.presentation.contacts.ContactListViewModel
 import com.call.testsdkvoip.presentation.navigation.Screen
+import com.guru.fontawesomecomposelib.FaIcon
+import com.guru.fontawesomecomposelib.FaIcons
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -32,6 +35,9 @@ fun ContactList(
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val fetchContactsState = contactListViewModel.fetchContactsState.value
+    val callingText = remember {
+        mutableStateOf("Calling")
+    }
 
 
     LaunchedEffect(key1 = true) { contactListViewModel.fetchContactsList() }
@@ -80,22 +86,36 @@ fun ContactList(
                                     shape = RoundedCornerShape(15.dp)
                                 )
                         ) {
+                            LaunchedEffect(key1 = true) {
 
+                                var dots = ""
+
+                                while (true) {
+                                    delay(1000)
+                                    if (dots.length <= 4)
+                                        dots += "."
+                                    else dots = ""
+
+                                    callingText.value = "Calling $dots"
+                                }
+                            }
                             Text(
-                                text = "Calling",
+                                text = callingText.value,
                                 modifier = Modifier
                                     .align(Alignment.CenterStart)
                                     .padding(5.dp)
                             )
-                            Button(
-                                onClick = {
-                                    contactListViewModel.hangCall()
-
-                                },
+                            FaIcon(
+                                faIcon = FaIcons.PhoneSlash,
+                                size = 24.dp, tint = Color.Red,
                                 modifier = Modifier
+                                    .clickable {
+                                        contactListViewModel.hangCall()
+
+
+                                    }
                                     .align(Alignment.CenterEnd)
-                                    .padding(5.dp)
-                            ) { Text(text = "Hang") }
+                                    .padding(15.dp))
                         }
                 }
 
