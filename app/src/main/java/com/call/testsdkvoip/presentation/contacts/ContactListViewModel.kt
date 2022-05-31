@@ -9,6 +9,7 @@ import com.call.testsdkvoip.domain.use_case.call.CallUser
 import com.call.testsdkvoip.domain.use_case.call.HangCall
 import com.call.testsdkvoip.domain.use_case.contacts.FetchContactsList
 import com.call.testsdkvoip.presentation.contacts.components.FetchContactsState
+import com.streamwide.smartms.lib.core.network.voip.STWVCall
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,20 +23,19 @@ class ContactListViewModel @Inject constructor(
     private val hangCall: HangCall,
 
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     private val _fetchContactsState = mutableStateOf(FetchContactsState())
     val fetchContactsState: State<FetchContactsState> = _fetchContactsState
 
 
-
-    fun hangCall() {
-        hangCall.invoke().onEach {
+    fun hangCall(call: STWVCall) {
+        hangCall.invoke(call).onEach {
             when (it) {
 
                 is Resources.Success -> {
                     _fetchContactsState.value = FetchContactsState(
-                        callInProgress = false,
+
                         contactsList = fetchContactsState.value.contactsList
 
                     )
@@ -72,7 +72,7 @@ class ContactListViewModel @Inject constructor(
 
                 is Resources.Success -> {
                     _fetchContactsState.value = FetchContactsState(
-                        callInProgress = true,
+                        callInProgress = it.data,
                         contactsList = fetchContactsState.value.contactsList
 
                     )

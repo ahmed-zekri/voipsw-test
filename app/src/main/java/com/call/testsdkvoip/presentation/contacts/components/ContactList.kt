@@ -69,7 +69,7 @@ fun ContactList(
                             })
                         }
                     }
-                    if (fetchContactsState.callInProgress)
+                    if (fetchContactsState.callInProgress != null)
                         Box(
                             modifier = Modifier
 
@@ -110,7 +110,7 @@ fun ContactList(
                                 size = 24.dp, tint = Color.Red,
                                 modifier = Modifier
                                     .clickable {
-                                        contactListViewModel.hangCall()
+                                        contactListViewModel.hangCall(fetchContactsState.callInProgress)
 
 
                                     }

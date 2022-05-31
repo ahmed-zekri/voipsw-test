@@ -1,7 +1,7 @@
 package com.call.testsdkvoip.domain.use_case.messaging
 
 import android.content.Context
-import com.call.testsdkvoip.common.MessageUtil
+import com.call.testsdkvoip.common.utils.MessageUtil
 import com.call.testsdkvoip.common.Resources
 import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWContact
 import com.streamwide.smartms.lib.core.api_ktx.messages.STWMessagesApi

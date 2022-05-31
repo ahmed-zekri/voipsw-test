@@ -14,6 +14,7 @@
  */
 package com.call.testsdkvoip.common
 
+import com.call.testsdkvoip.MyApp
 import com.streamwide.smartms.lib.core.api.call.IncomingSessionsListener
 import com.streamwide.smartms.lib.core.api.call.SessionStateListener
 import com.streamwide.smartms.lib.core.data.item.VoipSessionItem
@@ -21,10 +22,13 @@ import com.streamwide.smartms.lib.core.network.voip.STWVCall
 
 class MainManager private constructor() {
     companion object {
+
+
         val incomingSessionsListener: IncomingSessionsListener =
             object : IncomingSessionsListener {
                 override fun onReceiveIncomingCall(call: STWVCall) {
-
+                    MainWakeLockManager.getInstance(MyApp.getInstance())
+                        .acquireWakeLock(MainWakeLockManager.MainRegisteredComponent.VoIPSessionInvitation)
                 }
 
                 override fun onReceiveMissedCall(voipSessionItem: VoipSessionItem) {
@@ -105,3 +109,5 @@ class MainManager private constructor() {
 
 
 }
+
+

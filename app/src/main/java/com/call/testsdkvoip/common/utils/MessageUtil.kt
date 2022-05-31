@@ -1,4 +1,4 @@
-package com.call.testsdkvoip.common/*
+package com.call.testsdkvoip.common.utils/*
  *
  * 	StreamWIDE (Team on The Run)
  *
