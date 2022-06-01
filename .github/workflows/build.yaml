@@ -7,7 +7,7 @@ jobs:
       - name: Copy artifact files
         run: |
             mkdir -p My-Artifacts
-            cp -r ~/.m2/repository/* My-Artifacts
+            cp -r /github/home/.m2/repository/* My-Artifacts
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
