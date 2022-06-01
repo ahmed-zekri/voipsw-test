@@ -31,7 +31,7 @@ fun Navigation() {
         composable(route = Screen.Login.route) {
 
 
-            LoginScreen()
+            LoginScreen(navHostController = navController)
 
 
         }
@@ -48,8 +48,8 @@ fun Navigation() {
                 navController.previousBackStackEntry?.savedStateHandle?.get<STWContact>(
                     CONTACT_PARAM
                 )
-if (stwContact!= null)
-            Conversation(stwContact = stwContact)
+            if (stwContact != null)
+                Conversation(stwContact = stwContact)
 
 
         }

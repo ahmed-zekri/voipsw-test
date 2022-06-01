@@ -5,21 +5,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.call.testsdkvoip.presentation.login.LoginViewModel
+import com.call.testsdkvoip.presentation.navigation.Screen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
+fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel(), navHostController:NavHostController) {
 
     val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -44,6 +44,18 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
             CircularProgressIndicator(modifier = Modifier.align(Center))
         else if (loginState.success) {
             Text(text = "You are successfully connected")
+            LaunchedEffect(key1 = true) {
+
+
+                delay(1500)
+                navHostController.navigate(Screen.Intro.route) {
+
+                    popUpTo(Screen.Login.route) { inclusive = true }
+
+                }
+
+
+            }
 
 
         } else if (loginState.registerInfo != null) {
