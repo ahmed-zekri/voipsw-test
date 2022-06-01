@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.call.testsdkvoip.common.CONTACT_PARAM
+import com.call.testsdkvoip.presentation.CallState
+import com.call.testsdkvoip.presentation.CallStateListenerViewModel
 import com.call.testsdkvoip.presentation.contacts.ContactListViewModel
 import com.call.testsdkvoip.presentation.navigation.Screen
 import com.guru.fontawesomecomposelib.FaIcon
@@ -30,11 +32,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun ContactList(
     contactListViewModel: ContactListViewModel = hiltViewModel(),
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    callStateListenerViewModel: CallStateListenerViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val fetchContactsState = contactListViewModel.fetchContactsState.value
+    val callState = callStateListenerViewModel.callState.value
     val callingText = remember {
         mutableStateOf("Calling")
     }
@@ -42,6 +46,11 @@ fun ContactList(
 
     LaunchedEffect(key1 = true) { contactListViewModel.fetchContactsList() }
     Box(modifier = Modifier.fillMaxSize()) {
+        if (callState is CallState.CallReceived) {
+
+            Text(text = "Call received")
+
+        }
         if (fetchContactsState.isLoading)
 
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

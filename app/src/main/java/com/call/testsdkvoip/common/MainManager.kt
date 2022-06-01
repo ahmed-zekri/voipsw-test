@@ -23,12 +23,14 @@ import com.streamwide.smartms.lib.core.network.voip.STWVCall
 class MainManager private constructor() {
     companion object {
 
-
+        lateinit var globalListener: GlobalListener
         val incomingSessionsListener: IncomingSessionsListener =
             object : IncomingSessionsListener {
                 override fun onReceiveIncomingCall(call: STWVCall) {
                     MainWakeLockManager.getInstance(MyApp.getInstance())
                         .acquireWakeLock(MainWakeLockManager.MainRegisteredComponent.VoIPSessionInvitation)
+                    globalListener.onCallReceived(call)
+
                 }
 
                 override fun onReceiveMissedCall(voipSessionItem: VoipSessionItem) {
