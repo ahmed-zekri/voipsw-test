@@ -1,10 +1,10 @@
 package com.call.testsdkvoip.data.di
 
 import android.content.Context
+import com.call.testsdkvoip.domain.use_case.call.CallUseCases
 import com.call.testsdkvoip.domain.use_case.call.CallUser
 import com.call.testsdkvoip.domain.use_case.call.HangCall
 import com.call.testsdkvoip.domain.use_case.call.ListenForCallsState
-import com.call.testsdkvoip.domain.use_case.call.LoadVoipChannels
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,10 +19,9 @@ class CallModules {
 
     @Provides
     @Singleton
-    fun providesLoadVoipChannels(
-        @ApplicationContext context: Context
-    ): LoadVoipChannels =
-        LoadVoipChannels(context)
+    fun providesCallUseCases(
+        callUser: CallUser, hangCall: HangCall, listenForCallsState: ListenForCallsState
+    ): CallUseCases = CallUseCases(callUser, hangCall, listenForCallsState)
 
     @Provides
     @Singleton

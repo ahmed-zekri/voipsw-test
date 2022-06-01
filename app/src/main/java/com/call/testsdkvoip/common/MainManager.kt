@@ -44,7 +44,7 @@ class MainManager private constructor() {
             }
         val sessionStateListener: SessionStateListener = object : SessionStateListener {
             override fun calling(p0: STWVCall) {
-
+                globalListener.onCallInitiated(p0)
             }
 
             override fun onSessionStarted(p0: STWVCall) {
@@ -52,6 +52,7 @@ class MainManager private constructor() {
             }
 
             override fun inCall(p0: STWVCall) {
+                globalListener.onCallInProgress(p0)
 
             }
 
@@ -88,7 +89,7 @@ class MainManager private constructor() {
             }
 
             override fun onSessionStopped(p0: VoipSessionItem) {
-
+                globalListener.onCallStopped(p0)
             }
 
             override fun onSessionStoppedToMerge(p0: VoipSessionItem) {

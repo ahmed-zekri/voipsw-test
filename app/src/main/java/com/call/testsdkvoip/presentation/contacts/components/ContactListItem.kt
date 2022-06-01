@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.call.testsdkvoip.presentation.contacts.ContactListViewModel
+import com.call.testsdkvoip.presentation.CallStateViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.guru.fontawesomecomposelib.FaIcon
@@ -24,7 +24,7 @@ import com.streamwide.smartms.lib.core.api_ktx.contact.model.STWSubscriber
 fun ContactListItem(
     contact: STWContact,
     onClick: (STWContact) -> Unit,
-    contactListViewModel: ContactListViewModel = hiltViewModel()
+    callViewModel: CallStateViewModel = hiltViewModel()
 ) {
 
 
@@ -78,7 +78,7 @@ fun ContactListItem(
             size = 24.dp,
             modifier = Modifier.clickable {
                 if (permissionsState.allPermissionsGranted)
-                    contactListViewModel.callUserNumber(phoneNumber = (contact as STWSubscriber).phone!!.internationalNumber)
+                    callViewModel.callUserNumber(phoneNumber = (contact as STWSubscriber).phone!!.internationalNumber)
                 else
                     permissionsState.launchMultiplePermissionRequest()
 

@@ -21,11 +21,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.call.testsdkvoip.common.CONTACT_PARAM
 import com.call.testsdkvoip.presentation.CallState
-import com.call.testsdkvoip.presentation.CallStateListenerViewModel
+import com.call.testsdkvoip.presentation.CallStateViewModel
+import com.call.testsdkvoip.presentation.call.components.CallReceivedScreen
 import com.call.testsdkvoip.presentation.contacts.ContactListViewModel
 import com.call.testsdkvoip.presentation.navigation.Screen
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIcons
+import com.streamwide.smartms.lib.core.network.voip.STWVCall
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -33,12 +35,12 @@ import kotlinx.coroutines.launch
 fun ContactList(
     contactListViewModel: ContactListViewModel = hiltViewModel(),
     navHostController: NavHostController,
-    callStateListenerViewModel: CallStateListenerViewModel = hiltViewModel()
+    callStateViewModel: CallStateViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val fetchContactsState = contactListViewModel.fetchContactsState.value
-    val callState = callStateListenerViewModel.callState.value
+    val callState = callStateViewModel.callState.value
     val callingText = remember {
         mutableStateOf("Calling")
     }
@@ -46,87 +48,86 @@ fun ContactList(
 
     LaunchedEffect(key1 = true) { contactListViewModel.fetchContactsList() }
     Box(modifier = Modifier.fillMaxSize()) {
-        if (callState is CallState.CallReceived) {
+        if (callState is CallState.CallReceived)
 
-            Text(text = "Call received")
-
-        }
-        if (fetchContactsState.isLoading)
-
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            CallReceivedScreen(callState.item as STWVCall)
         else
-            if (fetchContactsState.error != null) {
-                LaunchedEffect(key1 = true) {
-                    scope.launch {
-                        snackBarHostState.showSnackbar(
-                            fetchContactsState.error, duration = SnackbarDuration.Indefinite
-                        )
-                    }
+            if (fetchContactsState.isLoading)
 
-                }
-            } else
-                if (fetchContactsState.contactsList != null) {
-                    LazyColumn(modifier = Modifier.align(Alignment.Center)) {
-
-                        items(fetchContactsState.contactsList) { contact ->
-                            ContactListItem(contact = contact, onClick = {
-                                navHostController.currentBackStackEntry?.savedStateHandle?.set(
-                                    CONTACT_PARAM,
-                                    contact
-                                )
-                                navHostController.navigate(Screen.Conversation.route)
-                            })
-                        }
-                    }
-                    if (fetchContactsState.callInProgress != null)
-                        Box(
-                            modifier = Modifier
-
-                                .padding(10.dp)
-                                .fillMaxWidth()
-                                .blur(30.dp)
-                                .background(
-                                    brush = Brush.horizontalGradient(
-                                        listOf(
-                                            Color.Gray,
-                                            Color.LightGray
-                                        )
-                                    ),
-                                    shape = RoundedCornerShape(15.dp)
-                                )
-                        ) {
-                            LaunchedEffect(key1 = true) {
-
-                                var dots = ""
-
-                                while (true) {
-                                    delay(1000)
-                                    if (dots.length <= 4)
-                                        dots += "."
-                                    else dots = ""
-
-                                    callingText.value = "Calling $dots"
-                                }
-                            }
-                            Text(
-                                text = callingText.value,
-                                modifier = Modifier
-                                    .align(Alignment.CenterStart)
-                                    .padding(5.dp)
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            else
+                if (fetchContactsState.error != null)
+                    LaunchedEffect(key1 = true) {
+                        scope.launch {
+                            snackBarHostState.showSnackbar(
+                                fetchContactsState.error, duration = SnackbarDuration.Indefinite
                             )
-                            FaIcon(
-                                faIcon = FaIcons.PhoneSlash,
-                                size = 24.dp, tint = Color.Red,
-                                modifier = Modifier
-                                    .clickable {
-                                        contactListViewModel.hangCall(fetchContactsState.callInProgress)
-
-
-                                    }
-                                    .align(Alignment.CenterEnd)
-                                    .padding(15.dp))
                         }
-                }
+
+
+                    } else
+                    if (fetchContactsState.contactsList != null) {
+                        LazyColumn(modifier = Modifier.align(Alignment.Center)) {
+
+                            items(fetchContactsState.contactsList) { contact ->
+                                ContactListItem(contact = contact, onClick = {
+                                    navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                                        CONTACT_PARAM,
+                                        contact
+                                    )
+                                    navHostController.navigate(Screen.Conversation.route)
+                                })
+                            }
+                        }
+                        if (callState is CallState.Calling)
+                            Box(
+                                modifier = Modifier
+
+                                    .padding(10.dp)
+                                    .fillMaxWidth()
+                                    .blur(10.dp)
+                                    .background(
+                                        brush = Brush.horizontalGradient(
+                                            listOf(
+                                                Color.Gray,
+                                                Color.LightGray
+                                            )
+                                        ),
+                                        shape = RoundedCornerShape(15.dp)
+                                    )
+                            ) {
+                                LaunchedEffect(key1 = true) {
+
+                                    var dots = ""
+
+                                    while (true) {
+                                        delay(1000)
+                                        if (dots.length <= 4)
+                                            dots += "."
+                                        else dots = ""
+
+                                        callingText.value = "Calling $dots"
+                                    }
+                                }
+                                Text(
+                                    text = callingText.value,
+                                    modifier = Modifier
+                                        .align(Alignment.CenterStart)
+                                        .padding(5.dp)
+                                )
+                                FaIcon(
+                                    faIcon = FaIcons.PhoneSlash,
+                                    size = 24.dp, tint = Color.Red,
+                                    modifier = Modifier
+                                        .clickable {
+                                            callStateViewModel.hangCall(callState.item as STWVCall)
+
+
+                                        }
+                                        .align(Alignment.CenterEnd)
+                                        .padding(15.dp))
+                            }
+                    }
 
         SnackbarHost(
             hostState = snackBarHostState,
