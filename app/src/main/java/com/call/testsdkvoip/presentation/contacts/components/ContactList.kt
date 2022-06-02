@@ -48,7 +48,7 @@ fun ContactList(
 
     LaunchedEffect(key1 = true) { contactListViewModel.fetchContactsList() }
     Box(modifier = Modifier.fillMaxSize()) {
-        if (callState is CallState.CallReceived)
+        if (callState is CallState.CallReceived || callState is CallState.CallInProgress)
 
             CallReceivedScreen(callState.item as STWVCall)
         else
@@ -85,7 +85,7 @@ fun ContactList(
 
                                     .padding(10.dp)
                                     .fillMaxWidth()
-                                    .blur(10.dp)
+
                                     .background(
                                         brush = Brush.horizontalGradient(
                                             listOf(
