@@ -16,6 +16,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://repo1.maven.org/maven2' }
     }
     versionCatalogs {
         libs {
@@ -30,7 +31,7 @@ dependencyResolutionManagement {
             alias('compose-activity').to("androidx.activity:activity-compose:${ACTIVITY_COMPOSE_VERSION}")
             alias('hilt-android').to("com.google.dagger:hilt-android:$HILT_VERSION")
             alias('hilt-compiler').to("com.google.dagger:hilt-compiler:$HILT_VERSION")
-            alias('junit').to("junit:junit:$JUNIT_VERSION")
+//            alias('junit').to("junit:junit:$JUNIT_VERSION")
             alias('hilt-navigation-compose').to("androidx.hilt:hilt-navigation-compose:$HILT_NAVIGATION_COMPOSE_VERSION")
             alias('coil-compose').to("io.coil-kt:coil-compose:$COIL_COMPOSE_VERSION")
             alias('gson').to("com.google.code.gson:gson:$GSON_VERSION")
@@ -43,6 +44,19 @@ dependencyResolutionManagement {
 
             alias('accompanist').to("com.google.accompanist:accompanist-permissions:$accompanist_version")
             alias('font-awesome-compose').to("com.github.Gurupreet:FontAwesomeCompose:$font_awesome_compose_version")
+            // Optional -- Mockito framework
+            alias("mockito-core").to("org.mockito:mockito-core:$mockitoVersion")
+            // Optional -- mockito-kotlin
+            alias("mockito-kotlin").to("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+            // Optional -- Mockk framework
+            alias("mockk").to("io.mockk:mockk:$mockkVersion")
+            alias("truth").to("com.google.truth:truth:$truthVersion")
+            // For Robolectric tests.
+            alias("hilt-android-testing").to("com.google.dagger:hilt-android-testing:$hilt_android_testing")
+            alias("hilt-android-compiler").to("com.google.dagger:hilt-android-compiler:$hilt_android_testing")
+            alias("junit-ktx").to("androidx.test.ext:junit-ktx:$junit_ktx")
+            alias("test-runner").to("androidx.test:runner:$runner_version")
+
 
 
         }

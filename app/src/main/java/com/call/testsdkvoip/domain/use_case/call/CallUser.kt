@@ -27,7 +27,7 @@ class CallUser @Inject constructor(
                 STWCallManager.getInstance().startFreeCall(
                     context, phoneNumber, STWCallPriority.NORMAL, object : CompletionCallback {
                         override fun onError(p0: CallError) {
-
+                            trySend(Resources.Error(p0.message))
                         }
 
                         override fun onCompletion(p0: STWVCall) {
@@ -38,7 +38,7 @@ class CallUser @Inject constructor(
 
 
             } catch (exception: Exception) {
-                trySend(Resources.Error(exception.message))
+                trySend(Resources.Error("Exception message ${exception.message}"))
 
 
             }
