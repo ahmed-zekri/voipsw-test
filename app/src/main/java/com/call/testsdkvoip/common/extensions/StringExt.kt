@@ -1,4 +1,4 @@
-package com.call.testsdkvoip.common
+package com.call.testsdkvoip.common.extensions
 
 import com.google.gson.Gson
 
