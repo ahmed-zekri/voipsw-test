@@ -5,8 +5,12 @@ import android.app.Application
 import android.util.Log
 import com.call.testsdkvoip.common.MainManager.Companion.incomingSessionsListener
 import com.call.testsdkvoip.common.MainManager.Companion.sessionStateListener
+import com.call.testsdkvoip.presentation.services.MainServiceManager
 import com.streamwide.smartms.lib.core.api.STWApplicationStateListener
+import com.streamwide.smartms.lib.core.api.STWServiceConfig
+import com.streamwide.smartms.lib.core.api.STWServiceListener
 import com.streamwide.smartms.lib.core.api.SmartMsSDK
+import com.streamwide.smartms.lib.core.api.account.STWAccountManager
 import com.streamwide.smartms.lib.core.api.call.STWCallManager
 import com.streamwide.smartms.lib.core.api.environment.certif.ITrustStore
 import com.streamwide.smartms.lib.core.api.environment.configuration.STWConfiguration
@@ -18,6 +22,8 @@ import java.io.InputStream
 
 @HiltAndroidApp
 class MyApp : Application(), STWApplicationStateListener {
+
+    private lateinit var mCurrentConnectionState: String
 
     companion object {
         private lateinit var mInstance: MyApp
@@ -40,18 +46,34 @@ class MyApp : Application(), STWApplicationStateListener {
 
     private fun init() {
         configureSdk()
-        SmartMsSDK.getInstance().initializeApp(this, this, null)
+
+        val mainServiceListener: STWServiceListener =
+            MainServiceManager.getInstance().mainServiceListener
+
+        val voIPServiceListener: STWServiceListener =
+            MainServiceManager.getInstance().voipServiceListener
+        val serviceConfig = STWServiceConfig.Builder
+            .configure()
+            .mainServiceListener(mainServiceListener)
+
+            .voIPServiceListener(voIPServiceListener)
+            .build()
+
+
         //define the application log level
         //define the application log level
         val applicationLogLevel: LogLevel = LogLevel.DEBUG
         STWLoggerHelper.initApplicationLogLevel(this, applicationLogLevel)
         STWLoggerHelper.debuggableMode(this, true)
         // MainManager.instance.registerOnSDKCallbacks()
+        mCurrentConnectionState = STWAccountManager.getInstance().accountConnectionState
+
         STWCallManager.getInstance().registerForSessionEvents(
             incomingSessionsListener, sessionStateListener,
             null, null, null
         )
 
+        SmartMsSDK.getInstance().initializeApp(this, this, serviceConfig)
     }
 
 

@@ -17,6 +17,8 @@ import com.call.testsdkvoip.presentation.CallState
 import com.call.testsdkvoip.presentation.CallStateViewModel
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIcons
+import com.streamwide.smartms.lib.core.api.call.CallError
+import com.streamwide.smartms.lib.core.api.call.CompletionCallback
 import com.streamwide.smartms.lib.core.api.call.STWCallManager
 import com.streamwide.smartms.lib.core.api.call.STWCallRefuseReason
 import com.streamwide.smartms.lib.core.network.voip.STWVCall
@@ -47,7 +49,15 @@ fun CallReceivedScreen(
                     .clickable {
                         STWCallManager
                             .getInstance()
-                            .acceptCall(context, stwCall, null)
+                            .acceptCall(context, stwCall, object : CompletionCallback{
+                                override fun onError(p0: CallError) {
+
+                                }
+
+                                override fun onCompletion(p0: STWVCall) {
+
+                                }
+                            })
 
                     }
 

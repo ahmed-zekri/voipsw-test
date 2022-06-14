@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SDK test</string>
     <string name="url_hostname">teamontherun.com</string>
-    <string name="default_fqdn">conf-dev2410-sw.streamwide.ro</string>
+    <string name="default_fqdn">conf-dev247-aio.streamwide.ro</string>
     <string name="key_store_alias">demo_sdk_2022</string>
     <string name="login_txt">Login</string>
     <string name="register">Register</string>
@@ -35,4 +35,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="main_service_beacon_running">Beacon running</string>
+    <string name="main_service_geolocation_and_beacon_running">geoloc service running</string>
+    <string name="app_directory_name">SecureSmartMS</string>
 </resources>

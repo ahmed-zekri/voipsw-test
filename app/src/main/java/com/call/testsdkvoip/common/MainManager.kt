@@ -14,11 +14,13 @@
  */
 package com.call.testsdkvoip.common
 
+import android.util.Log
 import com.call.testsdkvoip.MyApp
 import com.streamwide.smartms.lib.core.api.call.IncomingSessionsListener
 import com.streamwide.smartms.lib.core.api.call.SessionStateListener
 import com.streamwide.smartms.lib.core.data.item.VoipSessionItem
 import com.streamwide.smartms.lib.core.network.voip.STWVCall
+import com.streamwide.smartms.lib.hardware.logger.Logger
 
 class MainManager private constructor() {
     companion object {
@@ -30,6 +32,7 @@ class MainManager private constructor() {
                     MainWakeLockManager.getInstance(MyApp.getInstance())
                         .acquireWakeLock(MainWakeLockManager.MainRegisteredComponent.VoIPSessionInvitation)
                     globalListener.onCallReceived(call)
+                    Log.d("Recived call", "call")
 
                 }
 
@@ -45,67 +48,71 @@ class MainManager private constructor() {
         val sessionStateListener: SessionStateListener = object : SessionStateListener {
             override fun calling(p0: STWVCall) {
                 globalListener.onCallInitiated(p0)
+                Log.d("Recived call", "calling")
             }
 
             override fun onSessionStarted(p0: STWVCall) {
-
+                Log.d("Recived call", "onSessionStarted")
             }
 
             override fun inCall(p0: STWVCall) {
                 globalListener.onCallInProgress(p0)
+                Log.d("Recived call", "inCall")
 
             }
 
             override fun onSessionConnected(p0: STWVCall) {
-
+                Log.d("Recived call", "onSessionConnected")
             }
 
             override fun onSessionReconnecting(p0: STWVCall) {
-
+                Log.d("Recived call", "onSessionReconnecting")
             }
 
             override fun onAllSessionsReconnecting() {
-
+                Log.d("Recived call", "onAllSessionsReconnecting")
             }
 
             override fun onSessionOnHold(p0: STWVCall) {
-
+                Log.d("Recived call", "onSessionOnHold")
             }
 
             override fun onSessionResumed(p0: STWVCall) {
-
+                Log.d("Recived call", "onSessionResumed")
             }
 
             override fun onQosChanged(p0: STWVCall) {
-
+                Log.d("Recived call", "onQosChanged")
             }
 
             override fun onAudioPlayVolumeChanged(p0: STWVCall) {
-
+                Log.d("Recived call", "onAudioPlayVolumeChanged")
             }
 
             override fun onAudioCaptureVolumeChanged(p0: STWVCall) {
-
+                Log.d("Recived call", "onAudioCaptureVolumeChanged")
             }
 
             override fun onSessionStopped(p0: VoipSessionItem) {
                 globalListener.onCallStopped(p0)
+                Log.d("Recived call", "onSessionStopped")
             }
 
             override fun onSessionStoppedToMerge(p0: VoipSessionItem) {
-
+                Log.d("Recived call", "onSessionStoppedToMerge")
             }
 
             override fun onVoipSessionClosed(p0: VoipSessionItem) {
 
+                Log.d("Recived call", "onVoipSessionClosed")
             }
 
             override fun onSessionAnsweredFromOtherDevice(p0: String) {
-
+                Log.d("Recived call", "onSessionAnsweredFromOtherDevice")
             }
 
             override fun onAudioOutputChanged() {
-
+                Log.d("Recived call", "onAudioOutputChanged")
             }
         }
     }
