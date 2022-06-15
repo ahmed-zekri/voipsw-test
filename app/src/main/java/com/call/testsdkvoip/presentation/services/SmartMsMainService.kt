@@ -69,8 +69,8 @@ class SmartMsMainService : Service() {
                 .connectedContentText("Connected")
                 .connectingContentText("Connecting")
                 .contentTitle(
-                    if (mCurrentTasks == 33) "Call received from ${
-                        currentCall.callerPhoneItem.internationalNumber
+                    if (mCurrentTasks == 33 && currentCall != null) "Call received from ${
+                        currentCall?.callerPhoneItem?.internationalNumber
                     }" else "Service running"
                 )
 
@@ -87,17 +87,27 @@ class SmartMsMainService : Service() {
         val contentTitle: String? = mainServiceNotificationConfig.contentTitle
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         var notificationChannel = notificationManager.getNotificationChannel(channelId)
-        if (mCurrentTasks == 33) {
-            val att = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                .build()
-            notificationChannel.setSound(
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE),
-                att
+        var notificationChannelCall =
+            notificationManager.getNotificationChannel("VOIP_CALLS_NOTIFICATION_CHANNEL")
+        if (notificationChannelCall == null) {
+            notificationChannelCall = NotificationChannel(
+                "VOIP_CALLS_NOTIFICATION_CHANNEL",
+                "Calls notifications",
+                NotificationManager.IMPORTANCE_HIGH
             )
-            notificationChannel.enableVibration(true);
-            notificationChannel.vibrationPattern = longArrayOf(0, 1000, 500, 1000)
+
+            notificationChannelCall.setSound(
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
+                Notification.AUDIO_ATTRIBUTES_DEFAULT
+            )
+            notificationChannelCall.enableVibration(true);
+            notificationChannelCall.vibrationPattern = longArrayOf(5000, 1000, 500, 1000)
+
+
+
+
+
+            notificationManager.createNotificationChannel(notificationChannelCall)
 
         }
         if (notificationChannel == null) {
@@ -152,7 +162,10 @@ class SmartMsMainService : Service() {
             return
         }
         //@formatter:off
-        val builder = NotificationCompat.Builder(this, channelId)
+        val builder = NotificationCompat.Builder(
+            this,
+            if (currentCall != null && mCurrentTasks == 33) "VOIP_CALLS_NOTIFICATION_CHANNEL" else channelId
+        )
             .setSmallIcon(smallIcon)
             .setContentTitle(contentTitle)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -162,7 +175,7 @@ class SmartMsMainService : Service() {
             .setShowWhen(false)
 
 
-        if (mCurrentTasks == 33) {
+        if (mCurrentTasks == 33 && currentCall != null) {
             val acceptIntent = Intent(this, MainActivity::class.java)
             acceptIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             acceptIntent.putExtra("action", "accept")
@@ -201,12 +214,12 @@ class SmartMsMainService : Service() {
 
         val notification = builder.build()
 
-        notification.flags =
-            notification.flags or (Notification.FLAG_ONLY_ALERT_ONCE or Notification.FLAG_FOREGROUND_SERVICE)
+
         startForeground(
             0x1,
             notification
         )
+
     }
 
 
@@ -377,7 +390,7 @@ class SmartMsMainService : Service() {
         // Action to stop service with a specific task
         val ACTION_STOP = SERVICE_NAME + "stop"
 
-        lateinit var currentCall: STWVCall
+        var currentCall: STWVCall? = null
 
         // Action to update service with a specific task
         val ACTION_UPDATE = SERVICE_NAME + "update"
