@@ -17,6 +17,8 @@ package com.call.testsdkvoip.presentation.services
 
 import android.app.*
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import android.os.IBinder
 import android.util.Pair
 import androidx.core.app.NotificationCompat
@@ -31,6 +33,7 @@ import com.streamwide.smartms.lib.core.api.call.STWCallManager
 import com.streamwide.smartms.lib.core.api.environment.logger.STWLoggerHelper
 import com.streamwide.smartms.lib.core.api.environment.security.DeviceSecurityStatus
 import com.streamwide.smartms.lib.core.api.environment.security.STWSecurityManager
+import com.streamwide.smartms.lib.core.network.voip.STWVCall
 
 /**
  * Created by streamwide on 8/3/18.
@@ -67,7 +70,7 @@ class SmartMsMainService : Service() {
                 .connectingContentText("Connecting")
                 .contentTitle(
                     if (mCurrentTasks == 33) "Call received from ${
-                        STWCallManager.getInstance().allCalls[0]?.callerPhoneItem?.internationalNumber
+                        currentCall.callerPhoneItem.internationalNumber
                     }" else "Service running"
                 )
 
@@ -84,6 +87,19 @@ class SmartMsMainService : Service() {
         val contentTitle: String? = mainServiceNotificationConfig.contentTitle
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         var notificationChannel = notificationManager.getNotificationChannel(channelId)
+        if (mCurrentTasks == 33) {
+            val att = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build()
+            notificationChannel.setSound(
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE),
+                att
+            )
+            notificationChannel.enableVibration(true);
+            notificationChannel.vibrationPattern = longArrayOf(0, 1000, 500, 1000)
+
+        }
         if (notificationChannel == null) {
             notificationChannel = NotificationChannel(
                 channelId,
@@ -147,15 +163,38 @@ class SmartMsMainService : Service() {
 
 
         if (mCurrentTasks == 33) {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            val pendingIntent = PendingIntent.getActivity(
+            val acceptIntent = Intent(this, MainActivity::class.java)
+            acceptIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            acceptIntent.putExtra("action", "accept")
+
+            val rejectIntent = Intent(this, MainActivity::class.java)
+            rejectIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            rejectIntent.putExtra("action", "reject")
+
+
+            val acceptPendingIntent = PendingIntent.getActivity(
                 this,
-                0, intent,
-                PendingIntent.FLAG_IMMUTABLE
+                0, acceptIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT
             )
 
-            builder.addAction(R.drawable.ic_launcher_foreground, "Answer", pendingIntent)
+
+            val rejectPendingIntent = PendingIntent.getActivity(
+                this,
+                1, rejectIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
+
+            val acceptAction = NotificationCompat.Action.Builder(
+                0, "accept", acceptPendingIntent
+            ).build()
+
+            val rejectAction = NotificationCompat.Action.Builder(
+                0, "reject", rejectPendingIntent
+            ).build()
+            builder.addAction(acceptAction)
+            builder.addAction(rejectAction)
+
         }
         //@formatter:on
 
@@ -337,6 +376,8 @@ class SmartMsMainService : Service() {
 
         // Action to stop service with a specific task
         val ACTION_STOP = SERVICE_NAME + "stop"
+
+        lateinit var currentCall: STWVCall
 
         // Action to update service with a specific task
         val ACTION_UPDATE = SERVICE_NAME + "update"

@@ -16,6 +16,7 @@ package com.call.testsdkvoip.common
 
 import android.util.Log
 import com.call.testsdkvoip.MyApp
+import com.call.testsdkvoip.presentation.services.SmartMsMainService
 import com.streamwide.smartms.lib.core.api.call.IncomingSessionsListener
 import com.streamwide.smartms.lib.core.api.call.SessionStateListener
 import com.streamwide.smartms.lib.core.data.item.VoipSessionItem
@@ -32,7 +33,7 @@ class MainManager private constructor() {
                     MainWakeLockManager.getInstance(MyApp.getInstance())
                         .acquireWakeLock(MainWakeLockManager.MainRegisteredComponent.VoIPSessionInvitation)
                     globalListener.onCallReceived(call)
-                    Log.d("Recived call", "call")
+                    SmartMsMainService.currentCall = call
 
                 }
 
@@ -48,21 +49,21 @@ class MainManager private constructor() {
         val sessionStateListener: SessionStateListener = object : SessionStateListener {
             override fun calling(p0: STWVCall) {
                 globalListener.onCallInitiated(p0)
-                Log.d("Recived call", "calling")
+
             }
 
             override fun onSessionStarted(p0: STWVCall) {
-                Log.d("Recived call", "onSessionStarted")
+
             }
 
             override fun inCall(p0: STWVCall) {
                 globalListener.onCallInProgress(p0)
-                Log.d("Recived call", "inCall")
+
 
             }
 
             override fun onSessionConnected(p0: STWVCall) {
-                Log.d("Recived call", "onSessionConnected")
+
             }
 
             override fun onSessionReconnecting(p0: STWVCall) {
