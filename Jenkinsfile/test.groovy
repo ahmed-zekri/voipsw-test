@@ -17,7 +17,7 @@ pipeline {
 
     stage('Build & Install') {
 //Build the apk and the test apk which will run the tests on the apk
-        sh 'chmod +x gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
+        sh 'chmod +x ./gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
     }
 
     stage('Tests') {
