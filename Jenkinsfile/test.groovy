@@ -14,9 +14,7 @@
  */
 
 pipeline {
-    agent {
-        node
-    }
+    agent any
     stages {
         stage('Build & Install') {
             steps {
