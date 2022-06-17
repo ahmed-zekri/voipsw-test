@@ -38,7 +38,7 @@ internal class CallUserTest {
 
         runBlocking<Unit> {
           launch {   callUser("21625306014").onEach {
-              Truth.assertThat(1==1)
+              Truth.assertThat(true)
 
           } }
 

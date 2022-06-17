@@ -24,7 +24,7 @@ pipeline {
                                     sh 'chmod +x ./gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
                                 }
                         , "step 2 ": {
-                    sh './gradlew --no-daemon --debug :app:connectedDebugAndroidTest'
+                    sh './gradlew test'
 
 
                 }
@@ -36,4 +36,3 @@ pipeline {
 
     }
 }
-
