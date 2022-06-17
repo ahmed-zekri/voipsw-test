@@ -16,13 +16,18 @@
 pipeline {
     stages {
         stage('Build & Install') {
-//Build the apk and the test apk which will run the tests on the apk
-            sh 'chmod +x ./gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
-        }
+            steps {
+                parallel(
+                        "step 1":
+                                {
+                                    sh 'chmod +x ./gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
+                                }
+                )
+            }
 
-        stage('Tests') {
-//Start all the existing tests in the test package
-            sh './gradlew --no-daemon --debug :app:connectedDebugAndroidTest'
         }
+//Build the apk and the test apk which will run the tests on the apk
+
     }
 }
+
