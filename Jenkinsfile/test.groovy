@@ -13,7 +13,7 @@
  * @lastModifiedOn mar., 12 avr. 2022 14:05:40 +0200
  */
 
-pipeline {
+node {
     stages {
         stage('Build & Install') {
             steps {
