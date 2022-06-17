@@ -13,15 +13,16 @@
  * @lastModifiedOn mar., 12 avr. 2022 14:05:40 +0200
  */
 
-node {
-
-    stage('Build & Install') {
+pipeline {
+    stages {
+        stage('Build & Install') {
 //Build the apk and the test apk which will run the tests on the apk
-        sh 'chmod +x ./gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
-    }
+            sh 'chmod +x ./gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
+        }
 
-    stage('Tests') {
+        stage('Tests') {
 //Start all the existing tests in the test package
-        sh './gradlew --no-daemon --debug :app:connectedDebugAndroidTest'
+            sh './gradlew --no-daemon --debug :app:connectedDebugAndroidTest'
+        }
     }
 }
