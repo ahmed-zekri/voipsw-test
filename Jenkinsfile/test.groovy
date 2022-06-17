@@ -14,17 +14,11 @@
  */
 
 pipeline {
-    agent any
-    tools {
-        gradle "gradle_7.2.0"
-    }
+
     stage('Build & Install') {
 //Build the apk and the test apk which will run the tests on the apk
-        sh 'chmod +x gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
+      echo 'Build'
     }
 
-    stage('Tests') {
-//Start all the existing tests in the test package
-        sh './gradlew --no-daemon --debug :app:connectedDebugAndroidTest'
-    }
+
 }
