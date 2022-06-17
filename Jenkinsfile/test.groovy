@@ -13,7 +13,12 @@
  * @lastModifiedOn mar., 12 avr. 2022 14:05:40 +0200
  */
 
-node {
+pipeline {
+    agent {
+        node {
+            label "master"  //change this as per your agent label
+        }
+    }
     stages {
         stage('Build & Install') {
             steps {
