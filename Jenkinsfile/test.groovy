@@ -16,18 +16,14 @@
 pipeline {
     agent any
     stages {
-        stage('Build & Install') {
+        stage('Integration and Unit tests') {
             steps {
                 parallel(
                         "step 1":
                                 {
                                     sh 'chmod +x ./gradlew && ./gradlew --no-daemon --stacktrace clean :app:assembleDebug :app:assembleDebugAndroidTest'
                                 }
-                        , "step 2 ": {
-                    sh './gradlew test'
-
-
-                }
+                        
                 )
             }
 
