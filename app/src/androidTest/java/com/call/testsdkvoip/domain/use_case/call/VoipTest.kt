@@ -10,9 +10,8 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -25,12 +24,15 @@ import javax.inject.Inject
 @HiltAndroidTest
 @SmallTest
 
-internal class CallUserTest {
+internal class VoipTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
     lateinit var callUser: CallUser
+
+    @Inject
+    lateinit var hangCall: HangCall
 
     @Inject
     @ApplicationContext
@@ -58,10 +60,16 @@ internal class CallUserTest {
                         "Exception"
                     )
                 )
-            else
-                assertThat(
-                    it is Resources.Success
-                )
+            else if (it !is Resources.Success)
+                assert(false)
+            else {
+                val hangResult =
+                    hangCall(it.data!!).filter { resource -> resource !is Resources.Loading }
+                        .first()
+                assertThat(hangResult is Resources.Success)
+
+
+            }
 
 
         }
